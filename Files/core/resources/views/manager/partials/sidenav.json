@@ -1,0 +1,110 @@
+{
+    "dashboard": {
+        "keyword": [
+            "Dashboard",
+            "Home",
+            "Panel",
+            "manager",
+            "Control center",
+            "Overview",
+            "Main hub",
+            "Management hub",
+            "Central hub",
+            "Command center",
+            "Centralized interface",
+            "manager console",
+            "Management dashboard",
+            "Main screen",
+            "Command dashboard",
+            "manager control panel"
+        ],
+        "title": "Dashboard",
+        "icon": "las la-home",
+        "route_name": "manager.dashboard",
+        "menu_active": "manager.dashboard"
+    },
+    "branch_list": {
+        "keyword": [
+            "branch list","all branches"
+        ],
+        "title": "Branch List",
+        "icon": "las la-university",
+        "route_name": "manager.branch.index",
+        "menu_active": "manager.branch.index"
+    },
+    "manager_staff": {
+        "keyword": [
+            "manager staff"
+        ],
+        "title": "Manager Staff",
+        "icon": "las la-user-friends",
+        "route_name": "manager.staff.index",
+        "menu_active": "manager.staff*"
+    },
+    "manage_courier": {
+        "title": "Manage Courier",
+        "icon": "las la-code-branch",
+        "menu_active": ["manager.courier*"],
+        "submenu": [{
+                "keyword": ["sent courier", "sent in queue"],
+                "title": "Sent In Queue",
+                "route_name": "manager.courier.sentQueue",
+                "menu_active": "manager.courier.sentQueue"
+            },
+            {
+                "keyword": ["dispatch", "courier dispatch"],
+                "title": "Dispatched",
+                "route_name": "manager.courier.dispatch",
+                "menu_active": "manager.courier.dispatch"
+            },
+            {
+                "keyword": ["upcoming", "upcoming courier"],
+                "title": "Upcoming",
+                "route_name": "manager.courier.upcoming",
+                "menu_active": "manager.courier.upcoming"
+            },
+            {
+                "keyword": ["delivery in queue", "courier delivery"],
+                "title": "Delivery In Queue",
+                "route_name": "manager.courier.deliveryInQueue",
+                "menu_active": "manager.courier.deliveryInQueue"
+            },
+            {
+                "keyword": ["delivered", "delivered courier"],
+                "title": "Delivered",
+                "route_name": "manager.courier.delivered",
+                "menu_active": "manager.courier.delivered"
+            },
+            {
+                "keyword": ["sent all courier"],
+                "title": "Sent All Courier",
+                "route_name": "manager.courier.sent",
+                "menu_active": "manager.courier.sent"
+            },
+            {
+                "keyword": ["all", "all courier"],
+                "title": "All",
+                "route_name": "manager.courier.index",
+                "menu_active": "manager.courier.index"
+            }
+        ]
+    },
+    "branch_income": {
+        "keyword": [
+            "branch", "income", "profit", "branch income"
+        ],
+        "title": "Branch Income",
+        "icon": "las la-wallet",
+        "route_name": "manager.branch.income",
+        "menu_active": ["manager.branch.income"]
+    },
+    "support_ticket": {
+        "keyword": [
+            "ticket", "support ticket"
+        ],
+        "title": "Support Ticket",
+        "icon": "las la-ticket-alt",
+        "route_name": "manager.ticket.index",
+        "menu_active": ["ticket*"]
+    }
+}

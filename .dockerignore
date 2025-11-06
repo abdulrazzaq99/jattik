@@ -1,0 +1,40 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Documentation
+README.md
+*.md
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Node modules (if any)
+node_modules
+npm-debug.log
+
+# Temporary files
+*.log
+*.tmp
+nul
+
+# Laravel specific (keep vendor as it's already installed)
+Files/core/.env
+Files/core/storage/logs/*
+Files/core/storage/framework/cache/*
+Files/core/storage/framework/sessions/*
+Files/core/storage/framework/views/*

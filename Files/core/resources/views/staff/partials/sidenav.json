@@ -1,0 +1,123 @@
+{
+    "dashboard": {
+        "keyword": [
+            "Dashboard",
+            "Home",
+            "Panel",
+            "staff",
+            "Control center",
+            "Overview",
+            "Main hub",
+            "Management hub",
+            "Central hub",
+            "Command center",
+            "Centralized interface",
+            "staff console",
+            "Management dashboard",
+            "Main screen",
+            "Command dashboard",
+            "staff control panel"
+        ],
+        "title": "Dashboard",
+        "icon": "las la-home",
+        "route_name": "staff.dashboard",
+        "menu_active": "staff.dashboard"
+    },
+    "send_courier": {
+        "keyword": [
+            "send courier"
+        ],
+        "title": "Send Courier",
+        "icon": "las la-shipping-fast",
+        "route_name": "staff.courier.create",
+        "menu_active": "staff.courier.create"
+    },
+    "sent_in_queue": {
+        "keyword": [
+            "sent in queue"
+        ],
+        "title": "Sent In Queue",
+        "icon": "las la-hourglass-start",
+        "route_name": "staff.courier.sent.queue",
+        "menu_active": "staff.courier.sent.queue"
+    },
+    "shipping_courier": {
+        "keyword": [
+            "shipping","shipping courier"
+        ],
+        "title": "Shipping Courier",
+        "icon": "las la-sync",
+        "route_name": "staff.courier.dispatch",
+        "menu_active": "staff.courier.dispatch"
+    },
+    "upcoming_courier": {
+        "keyword": [
+            "upcoming","upcoming courier"
+        ],
+        "title": "Upcoming Courier",
+        "icon": "las la-history",
+        "route_name": "staff.courier.upcoming",
+        "menu_active": "staff.courier.upcoming",
+        "counter":"upcomingCount"
+    },
+    "delivery_in_queue": {
+        "keyword": [
+            "delivery","delivery in queue", "delivery courier"
+        ],
+        "title": "Delivery In Queue",
+        "icon": "lab la-accessible-icon",
+        "route_name": "staff.courier.delivery.queue",
+        "menu_active": "staff.courier.delivery.queue"
+    },
+    "manage_courier": {
+        "title": "Manage Courier",
+        "icon": "las la-sliders-h",
+        "menu_active": ["staff.courier.manage*"],
+        "submenu": [{
+                "keyword": ["total sent","total sent querier"],
+                "title": "Total Sent",
+                "route_name": "staff.courier.manage.sent.list",
+                "menu_active": "staff.courier.manage.sent.list"
+            },
+            {
+                "keyword": ["total delivered"],
+                "title": "Total Delivered",
+                "route_name": "staff.courier.manage.delivered",
+                "menu_active": "staff.courier.manage.delivered"
+            },
+            {
+                "keyword": ["all courier"],
+                "title": "All Courier",
+                "route_name": "staff.courier.manage.list",
+                "menu_active": "staff.courier.manage.list"
+            }
+        ]
+    },
+    "branch_list": {
+        "keyword": [
+            "branch", "branch list"
+        ],
+        "title": "Branch List",
+        "icon": "las la-university",
+        "route_name": "staff.branch.index",
+        "menu_active": "staff.branch.index"
+    },
+    "cash_collection": {
+        "keyword": [
+            "cash", "cash collection"
+        ],
+        "title": "Cash Collection",
+        "icon": "las la-wallet",
+        "route_name": "staff.cash.courier.income",
+        "menu_active": "staff.cash.courier.income"
+    },
+    "support_ticket": {
+        "keyword": [
+            "ticket", "support ticket"
+        ],
+        "title": "Support Ticket",
+        "icon": "las la-ticket-alt",
+        "route_name": "staff.ticket.index",
+        "menu_active": "ticket*"
+    }
+}

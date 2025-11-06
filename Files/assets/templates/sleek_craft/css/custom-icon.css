@@ -1,0 +1,136 @@
+@font-face {
+  font-family: "icomoon";
+  src: url("../fonts/custom-icon/fonts");
+  src: url("../fonts/custom-icon/fonts#iefix") format("embedded-opentype"),
+    url("../fonts/custom-icon/fonts/icomoon.ttf?igh0og") format("truetype"),
+    url("../fonts/custom-icon/fonts/icomoon.woff?igh0og") format("woff"),
+    url("../fonts/custom-icon/fonts/icomoon.svg?igh0og#icomoon") format("svg");
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+[class^="icon-"],
+[class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: "icomoon" !important;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-Searech-Icon:before {
+  content: "\e900";
+}
+.icon-Standard-Courier-Icon:before {
+  content: "\e901";
+}
+.icon-Total-Brunch:before {
+  content: "\e902";
+}
+.icon-Total-Client:before {
+  content: "\e903";
+}
+.icon-Total-Happy-Client:before {
+  content: "\e904";
+}
+.icon-Trust:before {
+  content: "\e905";
+}
+.icon-twitter-1:before {
+  content: "\e906";
+}
+.icon-Vector:before {
+  content: "\e907";
+}
+.icon-View-More:before {
+  content: "\e908";
+}
+.icon-vimeo-v-1:before {
+  content: "\e909";
+}
+.icon-Warehousing-Icon:before {
+  content: "\e90a";
+}
+.icon-Apply:before {
+  content: "\e90b";
+}
+.icon-delivery-boy-1:before {
+  content: "\e90c";
+}
+.icon-Document:before {
+  content: "\e90d";
+}
+.icon-Drop-Drown:before {
+  content: "\e90e";
+}
+.icon-email:before {
+  content: "\e90f";
+}
+.icon-Express-Courier-Icon:before {
+  content: "\e910";
+}
+.icon-Facebook:before {
+  content: "\e911";
+}
+.icon-fast-Delivery:before {
+  content: "\e912";
+}
+.icon-Frame:before {
+  content: "\e913";
+}
+.icon-Frame-1:before {
+  content: "\e914";
+}
+.icon-Get-Product:before {
+  content: "\e915";
+}
+.icon-Group:before {
+  content: "\e916";
+}
+.icon-Icon:before {
+  content: "\e917";
+}
+.icon-International-Courier-Icon:before {
+  content: "\e918";
+}
+.icon-Languages:before {
+  content: "\e919";
+}
+.icon-Location-Icon:before {
+  content: "\e91a";
+}
+.icon-Minus:before {
+  content: "\e91b";
+}
+.icon-Mobile-Icon:before {
+  content: "\e91c";
+}
+.icon-Night-Courier-Icon:before {
+  content: "\e91d";
+}
+.icon-Pallet-Courier-Icon:before {
+  content: "\e91e";
+}
+.icon-phone-call:before {
+  content: "\e91f";
+}
+.icon-pinterest-p-1:before {
+  content: "\e920";
+}
+.icon-Pluse:before {
+  content: "\e921";
+}
+.icon-Product-Box:before {
+  content: "\e922";
+}
+.icon-Quote-Icon:before {
+  content: "\e923";
+}
