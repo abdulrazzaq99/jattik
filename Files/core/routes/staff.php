@@ -87,6 +87,22 @@ Route::middleware('auth')->group(function () {
                 Route::post('close/{ticket}', 'closeTicket')->name('close');
                 Route::get('download/{ticket}', 'ticketDownload')->name('download');
             });
+
+            // Warehouse management routes (FR-17, FR-21)
+            Route::controller('WarehouseController')->prefix('warehouse')->name('warehouse.')->group(function () {
+                Route::get('/', 'index')->name('index');
+                Route::get('/create', 'create')->name('create');
+                Route::post('/', 'store')->name('store');
+                Route::get('/{holding}', 'show')->name('show');
+                Route::post('/{holding}/add-package', 'addPackage')->name('add.package');
+                Route::delete('/{holding}/package/{package}', 'removePackage')->name('remove.package');
+                Route::post('/{holding}/consolidate', 'consolidate')->name('consolidate');
+                Route::post('/{holding}/mark-shipped', 'markAsShipped')->name('mark.shipped');
+                Route::get('/expiring/list', 'nearingExpiry')->name('expiring');
+                // Shipping fee calculation (FR-21)
+                Route::get('/{holding}/calculate-fee', 'showCalculateFee')->name('calculate.fee');
+                Route::post('/{holding}/calculate-fee', 'calculateFee')->name('calculate.fee.post');
+            });
         });
     });
 });

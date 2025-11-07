@@ -80,6 +80,47 @@
                     </div>
                 </li>
 
+                <li class="sidebar-menu-item sidebar-dropdown">
+                    <a href="javascript:void(0)" class="{{ menuActive(['customer.addresses.*', 'customer.shipment.*'], 3) }}">
+                        <i class="menu-icon las la-shipping-fast"></i>
+                        <span class="menu-title">@lang('Shipment Services')</span>
+                    </a>
+                    <div class="sidebar-submenu {{ menuActive(['customer.addresses.*', 'customer.shipment.*'], 2) }}">
+                        <ul>
+                            <li class="sidebar-menu-item {{ menuActive('customer.shipment.calculator') }}">
+                                <a href="{{ route('customer.shipment.calculator') }}" class="nav-link">
+                                    <i class="menu-icon las la-calculator"></i>
+                                    <span class="menu-title">@lang('Shipping Calculator')</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-menu-item {{ menuActive('customer.addresses.index') }}">
+                                <a href="{{ route('customer.addresses.index') }}" class="nav-link">
+                                    <i class="menu-icon las la-map-marker-alt"></i>
+                                    <span class="menu-title">@lang('My Addresses')</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-menu-item {{ menuActive('customer.shipment.holdings') }}">
+                                <a href="{{ route('customer.shipment.holdings') }}" class="nav-link">
+                                    <i class="menu-icon las la-warehouse"></i>
+                                    <span class="menu-title">@lang('Warehouse Holdings')</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-menu-item {{ menuActive('customer.shipment.schedules') }}">
+                                <a href="{{ route('customer.shipment.schedules') }}" class="nav-link">
+                                    <i class="menu-icon las la-calendar-alt"></i>
+                                    <span class="menu-title">@lang('Shipping Schedules')</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-menu-item {{ menuActive('customer.shipment.quotes') }}">
+                                <a href="{{ route('customer.shipment.quotes') }}" class="nav-link">
+                                    <i class="menu-icon las la-file-invoice-dollar"></i>
+                                    <span class="menu-title">@lang('My Quotes')</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
                 <li class="sidebar-menu-item {{ menuActive('customer.payment.history') }}">
                     <a href="{{ route('customer.payment.history') }}" class="nav-link">
                         <i class="menu-icon las la-credit-card"></i>

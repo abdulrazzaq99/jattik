@@ -298,4 +298,36 @@ class Customer extends Authenticatable
     {
         return $query->where('is_premium', false);
     }
+
+    /**
+     * Get all addresses for this customer.
+     */
+    public function addresses()
+    {
+        return $this->hasMany(\App\Models\CustomerAddress::class);
+    }
+
+    /**
+     * Get the default address.
+     */
+    public function defaultAddress()
+    {
+        return $this->hasOne(\App\Models\CustomerAddress::class)->where('is_default', true);
+    }
+
+    /**
+     * Get warehouse holdings for this customer.
+     */
+    public function warehouseHoldings()
+    {
+        return $this->hasMany(\App\Models\WarehouseHolding::class);
+    }
+
+    /**
+     * Get shipping quotes for this customer.
+     */
+    public function shippingQuotes()
+    {
+        return $this->hasMany(\App\Models\ShippingQuote::class);
+    }
 }

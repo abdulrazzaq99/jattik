@@ -5,6 +5,8 @@ use App\Http\Controllers\Customer\Auth\RegisterController;
 use App\Http\Controllers\Customer\DashboardController;
 use App\Http\Controllers\Customer\SubscriptionController;
 use App\Http\Controllers\Customer\PaymentController;
+use App\Http\Controllers\Customer\AddressController;
+use App\Http\Controllers\Customer\ShipmentManagementController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -80,5 +82,38 @@ Route::middleware('customer')->group(function () {
         Route::get('history', 'history')->name('history');
         Route::get('invoice/{payment}', 'invoice')->name('invoice');
     });
+    // Address management routes (FR-14, FR-15)
+    Route::prefix('addresses')->name('addresses.')->controller(AddressController::class)->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/create', 'create')->name('create');
+        Route::post('/', 'store')->name('store');
+        Route::get('/{address}/edit', 'edit')->name('edit');
+        Route::put('/{address}', 'update')->name('update');
+        Route::delete('/{address}', 'destroy')->name('destroy');
+        Route::post('/{address}/set-default', 'setDefault')->name('set.default');
+    });
+
+    // Shipment management routes (FR-16, FR-17, FR-18, FR-20)
+    Route::prefix('shipment')->name('shipment.')->controller(ShipmentManagementController::class)->group(function () {
+        // Schedules (FR-16)
+        Route::get('/schedules', 'showSchedules')->name('schedules');
+
+        // Warehouse holdings (FR-17)
+        Route::get('/holdings', 'showHoldings')->name('holdings');
+        Route::get('/holdings/{holding}', 'showHolding')->name('holding.show');
+
+        // Extend shipping date (FR-18)
+        Route::get('/holdings/{holding}/extend', 'showExtendDate')->name('holding.extend');
+        Route::post('/holdings/{holding}/extend', 'extendDate')->name('holding.extend.post');
+
+        // Shipping calculator (FR-20)
+        Route::get('/calculator', 'showCalculator')->name('calculator');
+        Route::post('/calculator/estimate', 'calculateEstimate')->name('calculator.estimate');
+        Route::post('/calculator/save', 'saveQuote')->name('calculator.save');
+
+        // Shipping quotes
+        Route::get('/quotes', 'showQuotes')->name('quotes');
+    });
+
 
 });
