@@ -103,6 +103,25 @@ Route::middleware('auth')->group(function () {
                 Route::get('/{holding}/calculate-fee', 'showCalculateFee')->name('calculate.fee');
                 Route::post('/{holding}/calculate-fee', 'calculateFee')->name('calculate.fee.post');
             });
+
+            // Tracking Management (FR-24, FR-25)
+            Route::controller('TrackingManagementController')->prefix('tracking')->name('tracking.')->group(function () {
+                Route::get('/dashboard', 'dashboard')->name('dashboard');
+                Route::get('/events', 'events')->name('events');
+                Route::get('/exceptions', 'exceptions')->name('exceptions');
+                Route::post('/exceptions/{event}/resolve', 'resolveException')->name('exceptions.resolve');
+                Route::post('/refresh/{courier}', 'refreshTracking')->name('refresh');
+            });
+
+            // Claim Management (FR-32)
+            Route::controller('ClaimManagementController')->prefix('claims')->name('claims.')->group(function () {
+                Route::get('/', 'index')->name('index');
+                Route::get('/pending', 'pending')->name('pending');
+                Route::get('/{claim}/review', 'review')->name('review');
+                Route::post('/{claim}/approve', 'approve')->name('approve');
+                Route::post('/{claim}/reject', 'reject')->name('reject');
+                Route::get('/{claim}', 'show')->name('show');
+            });
         });
     });
 });

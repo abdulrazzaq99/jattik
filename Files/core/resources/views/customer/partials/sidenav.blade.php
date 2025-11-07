@@ -128,6 +128,53 @@
                     </a>
                 </li>
 
+                {{-- Notifications (FR-22 to FR-27) --}}
+                <li class="sidebar-menu-item {{ menuActive('customer.notifications.*') }}">
+                    <a href="{{ route('customer.notifications.index') }}" class="nav-link">
+                        <i class="menu-icon las la-bell"></i>
+                        <span class="menu-title">@lang('Notifications')</span>
+                        @php
+                            $unreadCount = \App\Models\ShipmentNotification::where('customer_id', auth()->guard('customer')->id())->where('is_read', false)->count();
+                        @endphp
+                        @if($unreadCount > 0)
+                            <span class="menu-badge pill bg--warning notification-badge">{{ $unreadCount }}</span>
+                        @endif
+                    </a>
+                </li>
+
+                {{-- Support & Claims (FR-28, FR-31, FR-32) --}}
+                <li class="sidebar-menu-item sidebar-dropdown">
+                    <a href="javascript:void(0)" class="{{ menuActive(['customer.support.*', 'customer.contact.*'], 3) }}">
+                        <i class="menu-icon las la-life-ring"></i>
+                        <span class="menu-title">@lang('Support')</span>
+                    </a>
+                    <div class="sidebar-submenu {{ menuActive(['customer.support.*', 'customer.contact.*'], 2) }}">
+                        <ul>
+                            <li class="sidebar-menu-item {{ menuActive('customer.support.issues') }}">
+                                <a href="{{ route('customer.support.issues') }}" class="nav-link">
+                                    <i class="menu-icon las la-exclamation-circle"></i>
+                                    <span class="menu-title">@lang('My Issues')</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-menu-item {{ menuActive('customer.support.claims') }}">
+                                <a href="{{ route('customer.support.claims') }}" class="nav-link">
+                                    <i class="menu-icon las la-file-invoice-dollar"></i>
+                                    <span class="menu-title">@lang('My Claims')</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-menu-item {{ menuActive('customer.contact.*') }}">
+                                <a href="{{ route('customer.contact.create') }}" class="nav-link">
+                                    <i class="menu-icon las la-envelope"></i>
+                                    <span class="menu-title">@lang('Contact Us')</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                {{-- Ratings (FR-33) - Could add if needed --}}
+                {{-- Users access ratings through delivered couriers --}}
+
                 <li class="sidebar-menu-item {{ menuActive('customer.profile') }}">
                     <a href="{{ route('customer.profile') }}" class="nav-link">
                         <i class="menu-icon las la-user"></i>

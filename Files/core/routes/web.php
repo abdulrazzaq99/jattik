@@ -6,6 +6,9 @@ Route::get('/clear', function () {
     \Illuminate\Support\Facades\Artisan::call('optimize:clear');
 });
 
+// WhatsApp Webhook (FR-30) - Public endpoint for Meta API
+Route::match(['get', 'post'], '/webhook/whatsapp', 'Admin\WhatsAppBotController@webhook')->name('webhook.whatsapp');
+
 // User Support Ticket
 Route::controller('TicketController')->prefix('ticket')->name('ticket.')->group(function () {
     Route::get('/', 'supportTicket')->name('index');

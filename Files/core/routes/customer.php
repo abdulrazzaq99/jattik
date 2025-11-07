@@ -7,6 +7,10 @@ use App\Http\Controllers\Customer\SubscriptionController;
 use App\Http\Controllers\Customer\PaymentController;
 use App\Http\Controllers\Customer\AddressController;
 use App\Http\Controllers\Customer\ShipmentManagementController;
+use App\Http\Controllers\Customer\NotificationController;
+use App\Http\Controllers\Customer\SupportController;
+use App\Http\Controllers\Customer\RatingController;
+use App\Http\Controllers\Customer\ContactController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -115,5 +119,41 @@ Route::middleware('customer')->group(function () {
         Route::get('/quotes', 'showQuotes')->name('quotes');
     });
 
+    // Notifications (FR-22, FR-23, FR-26, FR-27)
+    Route::prefix('notifications')->name('notifications.')->controller(NotificationController::class)->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/{notification}', 'show')->name('show');
+        Route::post('/{notification}/mark-read', 'markAsRead')->name('mark.read');
+        Route::post('/mark-all-read', 'markAllAsRead')->name('mark.all.read');
+        Route::get('/api/unread-count', 'unreadCount')->name('unread.count');
+    });
+
+    // Support System (FR-28, FR-31, FR-32)
+    Route::prefix('support')->name('support.')->controller(SupportController::class)->group(function () {
+        // Issues (FR-31)
+        Route::get('/issues', 'issues')->name('issues');
+        Route::get('/issues/create', 'createIssue')->name('issues.create');
+        Route::post('/issues', 'storeIssue')->name('issues.store');
+        Route::get('/issues/{issue}', 'showIssue')->name('issues.show');
+
+        // Claims (FR-32)
+        Route::get('/claims', 'claims')->name('claims');
+        Route::get('/claims/create', 'createClaim')->name('claims.create');
+        Route::post('/claims', 'storeClaim')->name('claims.store');
+        Route::get('/claims/{claim}', 'showClaim')->name('claims.show');
+    });
+
+    // Ratings (FR-33)
+    Route::prefix('ratings')->name('ratings.')->controller(RatingController::class)->group(function () {
+        Route::get('/create/{courier}', 'create')->name('create');
+        Route::post('/{courier}', 'store')->name('store');
+    });
+
+    // Contact Us (FR-28)
+    Route::prefix('contact')->name('contact.')->controller(ContactController::class)->group(function () {
+        Route::get('/', 'create')->name('create');
+        Route::post('/', 'store')->name('store');
+        Route::get('/messages', 'index')->name('index');
+    });
 
 });

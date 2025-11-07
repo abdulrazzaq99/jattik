@@ -156,6 +156,68 @@
             }
         ]
     },
+    "analytics": {
+        "title": "Analytics",
+        "icon": "las la-chart-bar",
+        "menu_active": "admin.analytics*",
+        "submenu": [
+            {
+                "keyword": ["Analytics Dashboard", "Analytics", "Statistics", "Data", "Metrics", "Charts"],
+                "title": "Dashboard",
+                "route_name": "admin.analytics.dashboard",
+                "menu_active": "admin.analytics.dashboard"
+            },
+            {
+                "keyword": ["Shipping Costs", "Analytics", "Cost breakdown", "Monthly costs", "Expenses"],
+                "title": "Shipping Costs",
+                "route_name": "admin.analytics.shipping_costs",
+                "menu_active": "admin.analytics.shipping_costs"
+            },
+            {
+                "keyword": ["Carrier Performance", "Analytics", "Carriers", "Delivery performance", "Carrier metrics"],
+                "title": "Carriers",
+                "route_name": "admin.analytics.carriers",
+                "menu_active": "admin.analytics.carriers"
+            },
+            {
+                "keyword": ["Regional Analytics", "Analytics", "Regions", "Popular destinations", "Regional distribution"],
+                "title": "Regions",
+                "route_name": "admin.analytics.regions",
+                "menu_active": "admin.analytics.regions"
+            }
+        ]
+    },
+    "whatsapp_bot": {
+        "title": "WhatsApp Bot",
+        "icon": "lab la-whatsapp",
+        "menu_active": "admin.whatsapp*",
+        "submenu": [
+            {
+                "keyword": ["WhatsApp Conversations", "WhatsApp", "Chat", "Messages", "Customer chat"],
+                "title": "Conversations",
+                "route_name": "admin.whatsapp.conversations",
+                "menu_active": "admin.whatsapp.conversations"
+            },
+            {
+                "keyword": ["WhatsApp Messages", "WhatsApp", "All messages", "Message log", "Chat history"],
+                "title": "Messages",
+                "route_name": "admin.whatsapp.messages",
+                "menu_active": "admin.whatsapp.messages"
+            },
+            {
+                "keyword": ["Escalated Conversations", "WhatsApp", "Human support", "Escalation", "Support needed"],
+                "title": "Escalated",
+                "route_name": "admin.whatsapp.escalated",
+                "menu_active": "admin.whatsapp.escalated"
+            },
+            {
+                "keyword": ["WhatsApp Settings", "WhatsApp", "Bot configuration", "Webhook", "Bot setup"],
+                "title": "Settings",
+                "route_name": "admin.whatsapp.settings",
+                "menu_active": "admin.whatsapp.settings"
+            }
+        ]
+    },
     "system_setting": {
         "keyword": ["System Setting", "setting", "System configuration", "System preferences", "Configuration management", "System setup"],
         "title": "System Setting",

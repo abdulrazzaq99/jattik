@@ -111,6 +111,50 @@
         "route_name": "staff.cash.courier.income",
         "menu_active": "staff.cash.courier.income"
     },
+    "tracking_management": {
+        "title": "Tracking Management",
+        "icon": "las la-map-marked-alt",
+        "menu_active": "staff.tracking*",
+        "submenu": [
+            {
+                "keyword": ["Tracking Dashboard", "Tracking", "Shipment tracking", "Tracking overview"],
+                "title": "Dashboard",
+                "route_name": "staff.tracking.dashboard",
+                "menu_active": "staff.tracking.dashboard"
+            },
+            {
+                "keyword": ["Tracking Events", "Tracking", "All events", "Shipment events", "Tracking history"],
+                "title": "All Events",
+                "route_name": "staff.tracking.events",
+                "menu_active": "staff.tracking.events"
+            },
+            {
+                "keyword": ["Tracking Exceptions", "Tracking", "Exceptions", "Delays", "Issues", "Problems"],
+                "title": "Exceptions",
+                "route_name": "staff.tracking.exceptions",
+                "menu_active": "staff.tracking.exceptions"
+            }
+        ]
+    },
+    "claims_management": {
+        "title": "Claims Management",
+        "icon": "las la-file-invoice-dollar",
+        "menu_active": "staff.claims*",
+        "submenu": [
+            {
+                "keyword": ["All Claims", "Claims", "Insurance claims", "Customer claims"],
+                "title": "All Claims",
+                "route_name": "staff.claims.index",
+                "menu_active": "staff.claims.index"
+            },
+            {
+                "keyword": ["Pending Claims", "Claims", "Review claims", "Claim review", "SLA"],
+                "title": "Pending Claims",
+                "route_name": "staff.claims.pending",
+                "menu_active": "staff.claims.pending"
+            }
+        ]
+    },
     "support_ticket": {
         "keyword": [
             "ticket", "support ticket"

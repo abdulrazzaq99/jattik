@@ -220,6 +220,26 @@ Route::middleware('admin')->group(function () {
     // SEO
     Route::get('seo', 'FrontendController@seoEdit')->name('seo');
 
+    // Analytics Dashboard (FR-36)
+    Route::controller('AnalyticsController')->prefix('analytics')->name('analytics.')->group(function () {
+        Route::get('/dashboard', 'dashboard')->name('dashboard');
+        Route::get('/shipping-costs', 'shippingCosts')->name('shipping.costs');
+        Route::get('/carriers', 'carriers')->name('carriers');
+        Route::get('/regions', 'regions')->name('regions');
+        Route::get('/export', 'exportData')->name('export');
+        Route::get('/live-stats', 'liveStats')->name('live.stats');
+    });
+
+    // WhatsApp Bot Management (FR-30)
+    Route::controller('WhatsAppBotController')->prefix('whatsapp')->name('whatsapp.')->group(function () {
+        Route::get('/messages', 'messages')->name('messages');
+        Route::get('/conversations', 'conversations')->name('conversations');
+        Route::get('/escalated', 'escalated')->name('escalated');
+        Route::post('/respond', 'respond')->name('respond');
+        Route::get('/settings', 'settings')->name('settings');
+        Route::get('/conversation/{phoneNumber}', 'conversation')->name('conversation');
+    });
+
     // Frontend
     Route::name('frontend.')->prefix('frontend')->group(function () {
         Route::controller('FrontendController')->group(function () {
