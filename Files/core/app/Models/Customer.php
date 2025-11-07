@@ -36,6 +36,9 @@ class Customer extends Authenticatable
         'mobile_verified_at',
         'last_login_at',
         'last_order_at',
+        'active_subscription_id',
+        'subscription_type',
+        'is_premium',
     ];
 
     /**
@@ -191,5 +194,108 @@ class Customer extends Authenticatable
     {
         $this->last_login_at = now();
         $this->save();
+    }
+
+    /**
+     * Get all subscriptions for this customer.
+     */
+    public function subscriptions()
+    {
+        return $this->hasMany(CustomerSubscription::class);
+    }
+
+    /**
+     * Get the active subscription.
+     */
+    public function activeSubscription()
+    {
+        return $this->belongsTo(CustomerSubscription::class, 'active_subscription_id');
+    }
+
+    /**
+     * Get all payments for this customer.
+     */
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
+    }
+
+    /**
+     * Get insurance policies for this customer.
+     */
+    public function insurancePolicies()
+    {
+        return $this->hasMany(InsurancePolicy::class);
+    }
+
+    /**
+     * Check if customer has active premium subscription.
+     */
+    public function isPremium(): bool
+    {
+        return (bool) $this->is_premium;
+    }
+
+    /**
+     * Check if customer has free insurance.
+     */
+    public function hasFreeInsurance(): bool
+    {
+        return $this->isPremium();
+    }
+
+    /**
+     * Get current subscription plan.
+     */
+    public function currentPlan()
+    {
+        return $this->activeSubscription?->plan;
+    }
+
+    /**
+     * Check if customer can create more shipments.
+     */
+    public function canCreateShipment(): bool
+    {
+        if (!$this->activeSubscription) {
+            return true; // Pay-per-use customers can always create shipments
+        }
+
+        return $this->activeSubscription->canShipMore();
+    }
+
+    /**
+     * Subscribe to a plan.
+     */
+    public function subscribeTo(SubscriptionPlan $plan): CustomerSubscription
+    {
+        $subscription = CustomerSubscription::create([
+            'customer_id' => $this->id,
+            'subscription_plan_id' => $plan->id,
+            'status' => $plan->isFree() ? 'active' : 'pending_payment',
+            'auto_renew' => true,
+        ]);
+
+        if ($plan->isFree()) {
+            $subscription->activate();
+        }
+
+        return $subscription;
+    }
+
+    /**
+     * Scope for premium customers.
+     */
+    public function scopePremium($query)
+    {
+        return $query->where('is_premium', true);
+    }
+
+    /**
+     * Scope for free tier customers.
+     */
+    public function scopeFreeTier($query)
+    {
+        return $query->where('is_premium', false);
     }
 }

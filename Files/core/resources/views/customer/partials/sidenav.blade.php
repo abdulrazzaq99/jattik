@@ -46,6 +46,47 @@
                     </div>
                 </li>
 
+                <li class="sidebar-menu-item sidebar-dropdown">
+                    <a href="javascript:void(0)" class="{{ menuActive(['customer.subscription.*'], 3) }}">
+                        <i class="menu-icon las la-crown"></i>
+                        <span class="menu-title">@lang('Subscription')</span>
+                        @if(auth()->guard('customer')->user()->isPremium())
+                            <span class="menu-badge pill bg--primary">@lang('Premium')</span>
+                        @endif
+                    </a>
+                    <div class="sidebar-submenu {{ menuActive(['customer.subscription.*'], 2) }}">
+                        <ul>
+                            <li class="sidebar-menu-item {{ menuActive('customer.subscription.plans') }}">
+                                <a href="{{ route('customer.subscription.plans') }}" class="nav-link">
+                                    <i class="menu-icon las la-dot-circle"></i>
+                                    <span class="menu-title">@lang('View Plans')</span>
+                                </a>
+                            </li>
+                            @if(auth()->guard('customer')->user()->activeSubscription)
+                            <li class="sidebar-menu-item {{ menuActive('customer.subscription.current') }}">
+                                <a href="{{ route('customer.subscription.current') }}" class="nav-link">
+                                    <i class="menu-icon las la-dot-circle"></i>
+                                    <span class="menu-title">@lang('My Subscription')</span>
+                                </a>
+                            </li>
+                            @endif
+                            <li class="sidebar-menu-item {{ menuActive('customer.subscription.history') }}">
+                                <a href="{{ route('customer.subscription.history') }}" class="nav-link">
+                                    <i class="menu-icon las la-dot-circle"></i>
+                                    <span class="menu-title">@lang('History')</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <li class="sidebar-menu-item {{ menuActive('customer.payment.history') }}">
+                    <a href="{{ route('customer.payment.history') }}" class="nav-link">
+                        <i class="menu-icon las la-credit-card"></i>
+                        <span class="menu-title">@lang('Payments')</span>
+                    </a>
+                </li>
+
                 <li class="sidebar-menu-item {{ menuActive('customer.profile') }}">
                     <a href="{{ route('customer.profile') }}" class="nav-link">
                         <i class="menu-icon las la-user"></i>
