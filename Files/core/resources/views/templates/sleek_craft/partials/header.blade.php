@@ -63,6 +63,30 @@
                                 </a>
                             </div>
                         </li>
+                        @auth('customer')
+                            <li class="nav-item d-block d-lg-none">
+                                <a class="nav-button flex-align btn btn--base w-100" href="{{ route('customer.dashboard') }}"
+                                    aria-current="page">
+                                    <span class="icon"><i class="las la-user"></i></span>
+                                    @lang('Dashboard')
+                                </a>
+                            </li>
+                        @else
+                            <li class="nav-item d-block d-lg-none">
+                                <a class="nav-button flex-align btn btn--base w-100 mb-2" href="{{ route('customer.login') }}"
+                                    aria-current="page">
+                                    <span class="icon"><i class="las la-sign-in-alt"></i></span>
+                                    @lang('Login')
+                                </a>
+                            </li>
+                            <li class="nav-item d-block d-lg-none">
+                                <a class="nav-button flex-align btn btn--base w-100" href="{{ route('customer.register') }}"
+                                    aria-current="page">
+                                    <span class="icon"><i class="las la-user-plus"></i></span>
+                                    @lang('Register')
+                                </a>
+                            </li>
+                        @endauth
                         <li class="nav-item {{ menuActive(['home']) }}">
                             <a class="nav-link" href="{{ route('home') }}" aria-current="page">
                                 @lang('Home')
@@ -88,6 +112,30 @@
                                 @lang('Order Tracking')
                             </a>
                         </li>
+                        @auth('customer')
+                            <li class="nav-item d-lg-block d-none">
+                                <a class="nav-button flex-align btn btn--base" href="{{ route('customer.dashboard') }}"
+                                    aria-current="page">
+                                    <span class="icon"><i class="las la-user"></i></span>
+                                    @lang('Dashboard')
+                                </a>
+                            </li>
+                        @else
+                            <li class="nav-item d-lg-block d-none">
+                                <a class="nav-button flex-align btn btn--base" href="{{ route('customer.login') }}"
+                                    aria-current="page">
+                                    <span class="icon"><i class="las la-sign-in-alt"></i></span>
+                                    @lang('Login')
+                                </a>
+                            </li>
+                            <li class="nav-item d-lg-block d-none">
+                                <a class="nav-button flex-align btn btn--base" href="{{ route('customer.register') }}"
+                                    aria-current="page">
+                                    <span class="icon"><i class="las la-user-plus"></i></span>
+                                    @lang('Register')
+                                </a>
+                            </li>
+                        @endauth
                     </ul>
 
                 </div>

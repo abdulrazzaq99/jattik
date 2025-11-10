@@ -171,7 +171,9 @@ class NotifyProcess{
         //Getting the notification message from database if use and template exist
         //If not exist, get the message which have sent via method
 		if ($user && $template) {
-		    $message = $this->replaceShortCode($user->fullname,$user->username,gs($globalTemplate),$template->$body);
+		    // Handle different user types - some have username, some have email
+	    $identifier = property_exists($user, 'username') && $user->username ? $user->username : (property_exists($user, 'email') ? $user->email : $this->toAddress);
+	    $message = $this->replaceShortCode($user->fullname, $identifier, gs($globalTemplate), $template->$body);
 		    if (empty($message)) {
 		        $message = $template->$body;
 		    }

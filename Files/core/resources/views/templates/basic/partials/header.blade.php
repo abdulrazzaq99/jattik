@@ -23,6 +23,18 @@
                     <a class="cmn--btn btn--sm me-3 text-white" href="{{ route('order.tracking') }}">
                         @lang('Order Tracking')
                     </a>
+                    @auth('customer')
+                        <a class="cmn--btn btn--sm me-3 text-white" href="{{ route('customer.dashboard') }}">
+                            @lang('Dashboard')
+                        </a>
+                    @else
+                        <a class="cmn--btn btn--sm me-3 text-white" href="{{ route('customer.login') }}">
+                            @lang('Login')
+                        </a>
+                        <a class="cmn--btn btn--sm text-white" href="{{ route('customer.register') }}">
+                            @lang('Register')
+                        </a>
+                    @endauth
                 </div>
             </div>
         </div>
@@ -50,6 +62,18 @@
                         @endif
 
                         <a class="cmn--btn btn--sm me-3" href="{{ route('order.tracking') }}">@lang('Order Tracking')</a>
+                        @auth('customer')
+                            <a class="cmn--btn btn--sm me-3" href="{{ route('customer.dashboard') }}">
+                                @lang('Dashboard')
+                            </a>
+                        @else
+                            <a class="cmn--btn btn--sm me-3" href="{{ route('customer.login') }}">
+                                @lang('Login')
+                            </a>
+                            <a class="cmn--btn btn--sm me-3" href="{{ route('customer.register') }}">
+                                @lang('Register')
+                            </a>
+                        @endauth
                         <ul class="header-contact-info">
                             <li>
                                 <a href="Mailto:{{ @$contactInfo->data_values->email }}">

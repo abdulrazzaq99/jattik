@@ -66,11 +66,11 @@ class OtpLog extends Model
     }
 
     /**
-     * Check if max attempts reached (limit to 5).
+     * Check if max attempts reached (limit to 3).
      */
     public function maxAttemptsReached(): bool
     {
-        return $this->attempts >= 5;
+        return $this->attempts >= 3;
     }
 
     /**

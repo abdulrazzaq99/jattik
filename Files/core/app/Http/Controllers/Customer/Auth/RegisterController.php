@@ -35,7 +35,7 @@ class RegisterController extends Controller
     }
 
     /**
-     * Handle registration - Direct registration without OTP.
+     * Handle registration - Send OTP for verification.
      */
     public function register(Request $request)
     {
@@ -60,8 +60,8 @@ class RegisterController extends Controller
             return back()->with('error', 'Mobile number already registered.');
         }
 
-        // Create customer account directly
-        $customer = Customer::create([
+        // Store registration data in session (including password hash)
+        $registrationData = [
             'firstname' => $request->firstname,
             'lastname' => $request->lastname,
             'email' => $request->email,
@@ -72,21 +72,15 @@ class RegisterController extends Controller
             'city' => $request->city,
             'state' => $request->state,
             'postal_code' => $request->postal_code,
-            'status' => 1, // Active
-            'email_verified_at' => now(), // Auto-verify
-            'mobile_verified_at' => now(), // Auto-verify
-        ]);
+            'otp_method' => 'email', // Use email for OTP
+        ];
 
-        // Assign virtual address
-        $this->virtualAddressService->assignToCustomer($customer);
+        session(['registration_data' => $registrationData]);
 
-        // Log the customer in
-        Auth::guard('customer')->login($customer);
+        // Send OTP via email
+        $this->otpService->send(null, $request->email, 'email', 'registration');
 
-        // Update last login
-        $customer->updateLastLogin();
-
-        return redirect()->route('customer.dashboard')->with('success', 'Registration successful! Welcome to ' . gs('site_name'));
+        return redirect()->route('customer.register.verify')->with('success', 'OTP has been sent to your email. Please verify to complete registration.');
     }
 
     /**
@@ -135,6 +129,7 @@ class RegisterController extends Controller
             'firstname' => $registrationData['firstname'],
             'lastname' => $registrationData['lastname'],
             'email' => $registrationData['email'],
+            'password' => $registrationData['password'], // Already hashed
             'mobile' => $registrationData['mobile'],
             'country_code' => $registrationData['country_code'],
             'address' => $registrationData['address'],

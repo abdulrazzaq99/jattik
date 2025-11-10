@@ -28,7 +28,7 @@ class LoginController extends Controller
     }
 
     /**
-     * Handle login request - Simple login without OTP.
+     * Handle login request - Verify password then send OTP.
      */
     public function login(Request $request)
     {
@@ -62,23 +62,17 @@ class LoginController extends Controller
             $customer->save();
         }
 
-        // Log the customer in
-        Auth::guard('customer')->login($customer, $request->filled('remember'));
-
-        // Update last login
-        $customer->updateLastLogin();
-
-        // Create login log
-        CustomerLoginLog::create([
-            'customer_id' => $customer->id,
-            'login_at' => now(),
-            'ip_address' => request()->ip(),
-            'user_agent' => request()->userAgent(),
-            'login_method' => 'password',
-            'session_id' => session()->getId(),
+        // Store customer ID and OTP method in session
+        $otpMethod = 'email'; // Default to email
+        session([
+            'login_customer_id' => $customer->id,
+            'login_otp_method' => $otpMethod,
         ]);
 
-        return redirect()->route('customer.dashboard')->with('success', 'Welcome back, ' . $customer->fullname . '!');
+        // Send OTP via email
+        $this->otpService->send($customer, $customer->email, $otpMethod, 'login');
+
+        return redirect()->route('customer.login.verify')->with('success', 'OTP has been sent to your email. Please verify to complete login.');
     }
 
     /**

@@ -11,7 +11,7 @@ class OtpService
     /**
      * OTP validity duration in minutes.
      */
-    const OTP_VALIDITY_MINUTES = 10;
+    const OTP_VALIDITY_MINUTES = 1;
 
     /**
      * Generate a random OTP code.
