@@ -62,17 +62,36 @@ class LoginController extends Controller
             $customer->save();
         }
 
+        // TEMPORARY: OTP verification disabled - direct login
         // Store customer ID and OTP method in session
-        $otpMethod = 'email'; // Default to email
-        session([
-            'login_customer_id' => $customer->id,
-            'login_otp_method' => $otpMethod,
-        ]);
+        // $otpMethod = 'email'; // Default to email
+        // session([
+        //     'login_customer_id' => $customer->id,
+        //     'login_otp_method' => $otpMethod,
+        // ]);
 
         // Send OTP via email
-        $this->otpService->send($customer, $customer->email, $otpMethod, 'login');
+        // $this->otpService->send($customer, $customer->email, $otpMethod, 'login');
 
-        return redirect()->route('customer.login.verify')->with('success', 'OTP has been sent to your email. Please verify to complete login.');
+        // return redirect()->route('customer.login.verify')->with('success', 'OTP has been sent to your email. Please verify to complete login.');
+
+        // Direct login without OTP
+        Auth::guard('customer')->login($customer);
+
+        // Update last login
+        $customer->updateLastLogin();
+
+        // Create login log
+        CustomerLoginLog::create([
+            'customer_id' => $customer->id,
+            'login_at' => now(),
+            'ip_address' => request()->ip(),
+            'user_agent' => request()->userAgent(),
+            'login_method' => 'password_only',
+            'session_id' => session()->getId(),
+        ]);
+
+        return redirect()->route('customer.dashboard')->with('success', 'Welcome back, ' . $customer->fullname . '!');
     }
 
     /**
