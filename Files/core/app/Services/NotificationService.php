@@ -30,7 +30,7 @@ class NotificationService
             ],
         ]);
 
-        // Send via email and SMS
+        // Send via email
         try {
             notify($customer, 'SHIPMENT_ARRIVED', [
                 'tracking_code' => $courier->code,
@@ -38,7 +38,7 @@ class NotificationService
                 'customer_name' => $customer->fullname,
             ]);
 
-            $notification->markAsSent(['email', 'sms']);
+            $notification->markAsSent(['email']);
         } catch (\Exception $e) {
             Log::error('Failed to send facility arrival notification: ' . $e->getMessage());
         }
@@ -74,7 +74,7 @@ class NotificationService
                 'estimated_delivery' => $courier->estimated_delivery_date?->format('M d, Y') ?? 'TBD',
             ]);
 
-            $notification->markAsSent(['email', 'sms']);
+            $notification->markAsSent(['email']);
         } catch (\Exception $e) {
             Log::error('Failed to send dispatch notification: ' . $e->getMessage());
         }
@@ -109,7 +109,7 @@ class NotificationService
                 'customer_name' => $customer->fullname,
             ]);
 
-            $notification->markAsSent(['email', 'sms']);
+            $notification->markAsSent(['email']);
         } catch (\Exception $e) {
             Log::error('Failed to send tracking link notification: ' . $e->getMessage());
         }
@@ -179,7 +179,7 @@ class NotificationService
                 'delivered_at' => now()->format('M d, Y h:i A'),
             ]);
 
-            $notification->markAsSent(['email', 'sms']);
+            $notification->markAsSent(['email']);
         } catch (\Exception $e) {
             Log::error('Failed to send delivery confirmation: ' . $e->getMessage());
         }
@@ -222,7 +222,7 @@ class NotificationService
                 'details' => $details,
             ]);
 
-            $notification->markAsSent(['email', 'sms']);
+            $notification->markAsSent(['email']);
         } catch (\Exception $e) {
             Log::error('Failed to send exception notification: ' . $e->getMessage());
         }

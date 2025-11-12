@@ -29,11 +29,11 @@ class OtpService
     }
 
     /**
-     * Send OTP to customer via email or SMS.
+     * Send OTP to customer via email.
      *
      * @param  Customer|null  $customer
-     * @param  string  $contact (email or mobile)
-     * @param  string  $type ('email', 'sms', 'whatsapp')
+     * @param  string  $contact (email)
+     * @param  string  $type ('email')
      * @param  string  $purpose ('registration', 'login', 'password_reset')
      * @return OtpLog
      */
@@ -49,7 +49,7 @@ class OtpService
         $otpLog = OtpLog::create([
             'customer_id' => $customer ? $customer->id : null,
             'email' => $type === 'email' ? $contact : null,
-            'mobile' => in_array($type, ['sms', 'whatsapp']) ? $contact : null,
+            'mobile' => null,
             'otp_code' => $code,
             'otp_type' => $type,
             'purpose' => $purpose,
@@ -80,12 +80,12 @@ class OtpService
         // Create temporary user object if no customer exists yet
         $userObject = $customer ?? (object)[
             'email' => $type === 'email' ? $contact : null,
-            'mobile' => in_array($type, ['sms', 'whatsapp']) ? $contact : null,
+            'mobile' => null,
             'fullname' => 'Customer',
         ];
 
-        // Send notification
-        notify($userObject, $templateName, $shortcodes, [$type]);
+        // Send notification via email only
+        notify($userObject, $templateName, $shortcodes, ['email']);
 
         return $otpLog;
     }

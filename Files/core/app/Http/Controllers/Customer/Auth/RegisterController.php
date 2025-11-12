@@ -138,7 +138,7 @@ class RegisterController extends Controller
             'postal_code' => $registrationData['postal_code'],
             'status' => 1, // Active
             'email_verified_at' => $registrationData['otp_method'] === 'email' ? now() : null,
-            'mobile_verified_at' => $registrationData['otp_method'] === 'sms' ? now() : null,
+            'mobile_verified_at' => null,
         ]);
 
         // Assign virtual address

@@ -93,9 +93,6 @@ class ShipmentNotification extends Model
         if (in_array('email', $channels)) {
             $update['sent_via_email'] = true;
         }
-        if (in_array('sms', $channels)) {
-            $update['sent_via_sms'] = true;
-        }
         if (in_array('whatsapp', $channels)) {
             $update['sent_via_whatsapp'] = true;
         }

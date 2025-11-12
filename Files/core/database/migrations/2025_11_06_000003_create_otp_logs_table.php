@@ -18,7 +18,7 @@ return new class extends Migration
                 $table->string('email')->nullable();
                 $table->string('mobile', 40)->nullable();
                 $table->string('otp_code', 6);
-                $table->enum('otp_type', ['email', 'sms', 'whatsapp']);
+                $table->enum('otp_type', ['email']);
                 $table->enum('purpose', ['registration', 'login', 'password_reset']);
                 $table->timestamp('sent_at')->useCurrent();
                 $table->timestamp('verified_at')->nullable();

@@ -232,7 +232,7 @@ trait SupportTicketManager
         if ($this->userType == 'admin') {
             $createLog = false;
             $user = $ticket;
-            $sendVia = ['email', 'sms'];
+            $sendVia = ['email'];
             if ($ticket->user_id != 0) {
                 $createLog = true;
                 $user = $ticket->user;

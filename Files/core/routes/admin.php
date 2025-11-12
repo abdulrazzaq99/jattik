@@ -181,9 +181,6 @@ Route::middleware('admin')->group(function () {
         Route::get('global/email', 'globalEmail')->name('global.email');
         Route::post('global/email/update', 'globalEmailUpdate')->name('global.email.update');
 
-        Route::get('global/sms', 'globalSms')->name('global.sms');
-        Route::post('global/sms/update', 'globalSmsUpdate')->name('global.sms.update');
-
         Route::get('templates', 'templates')->name('templates');
         Route::get('template/edit/{type}/{id}', 'templateEdit')->name('template.edit');
         Route::post('template/update/{type}/{id}', 'templateUpdate')->name('template.update');
@@ -192,11 +189,6 @@ Route::middleware('admin')->group(function () {
         Route::get('email/setting', 'emailSetting')->name('email');
         Route::post('email/setting', 'emailSettingUpdate');
         Route::post('email/test', 'emailTest')->name('email.test');
-
-        //SMS Setting
-        Route::get('sms/setting', 'smsSetting')->name('sms');
-        Route::post('sms/setting', 'smsSettingUpdate');
-        Route::post('sms/test', 'smsTest')->name('sms.test');
     });
 
     // Plugin

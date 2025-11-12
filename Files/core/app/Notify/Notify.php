@@ -116,11 +116,10 @@ class Notify
     */
 	protected function notifyMethods($sendVia = null){
 		$methods = [
-			'email'=>Email::class,
-			'sms'=>Sms::class
+			'email'=>Email::class
 		];
 		if ($sendVia) {
-			return $methods[$sendVia];
+			return $methods[$sendVia] ?? null;
 		}
 		return $methods;
 	}

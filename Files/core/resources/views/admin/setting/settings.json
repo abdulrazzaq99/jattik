@@ -14,14 +14,14 @@
         "route_name": "admin.setting.logo.icon"
     },
     "system_configuration": {
-        "keyword": ["basic modules", "control", "modules", "system", "configuration settings", "system control","email control","sms control","language control","email notification","sms notification"],
+        "keyword": ["basic modules", "control", "modules", "system", "configuration settings", "system control","email control","language control","email notification"],
         "title": "System Configuration",
         "subtitle": "Control all of the basic modules of the system.",
         "icon": "las la-cogs",
         "route_name": "admin.setting.system.configuration"
     },
     "notification_setting": {
-        "keyword": ["email configuration","sms configure","email setting","sms setting","email template","sms template","notification template","smtp","sendgrid","send grid","mailjet","mail jet","php","nexmo","clickatell","click a tell","infobip","info bip","message bird","sms broadcast","twilio","text magic","custom api","template setting","global template","global notification"],
+        "keyword": ["email configuration","email setting","email template","notification template","smtp","sendgrid","send grid","mailjet","mail jet","php","template setting","global template","global notification"],
         "title": "Notification Setting",
         "subtitle": "Control and configure overall notification elements of the system.",
         "icon": "las la-bell",

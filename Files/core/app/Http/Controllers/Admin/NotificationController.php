@@ -6,7 +6,6 @@ use App\Constants\Status;
 use App\Http\Controllers\Controller;
 use App\Lib\RequiredConfig;
 use App\Models\NotificationTemplate;
-use App\Notify\Sms;
 use Illuminate\Http\Request;
 
 class NotificationController extends Controller
@@ -37,28 +36,6 @@ class NotificationController extends Controller
         return back()->withNotify($notify);
     }
 
-    public function globalSms()
-    {
-        $pageTitle = 'Global Sms Template';
-        return view('admin.notification.global_sms_template', compact('pageTitle'));
-    }
-
-    public function globalSmsUpdate(Request $request)
-    {
-        $request->validate([
-            'sms_from' => 'required|string|max:40',
-            'sms_template' => 'required',
-        ]);
-
-        $general = gs();
-        $general->sms_from = $request->sms_from;
-        $general->sms_template = $request->sms_template;
-        $general->save();
-
-        $notify[] = ['success', 'Global sms template updated successfully'];
-        return back()->withNotify($notify);
-    }
-
     public function templates()
     {
         $pageTitle = 'Notification Templates';
@@ -82,11 +59,6 @@ class NotificationController extends Controller
                 'email_body' => 'required',
             ];
         }
-        if ($type == 'sms') {
-            $validationRule = [
-                'sms_body' => 'required',
-            ];
-        }
         $request->validate($validationRule);
         $template = NotificationTemplate::findOrFail($id);
         if ($type == 'email') {
@@ -95,11 +67,6 @@ class NotificationController extends Controller
             $template->email_sent_from_name = $request->email_sent_from_name;
             $template->email_sent_from_address = $request->email_sent_from_address;
             $template->email_status = $request->email_status ? Status::ENABLE : Status::DISABLE;
-        }
-        if ($type == 'sms') {
-            $template->sms_body = $request->sms_body;
-            $template->sms_sent_from = $request->sms_sent_from;
-            $template->sms_status = $request->sms_status ? Status::ENABLE : Status::DISABLE;
         }
         $template->save();
 
@@ -185,111 +152,6 @@ class NotificationController extends Controller
             $notify[] = ['error', session('mail_error')];
         } else {
             $notify[] = ['success', 'Email sent to ' . $request->email . ' successfully'];
-        }
-
-        return back()->withNotify($notify);
-    }
-
-    public  function smsSetting()
-    {
-        $pageTitle = 'SMS Notification Settings';
-        return view('admin.notification.sms_setting', compact('pageTitle'));
-    }
-
-    public function smsSettingUpdate(Request $request)
-    {
-        $request->validate([
-            'sms_method' => 'required|in:clickatell,infobip,messageBird,nexmo,smsBroadcast,twilio,textMagic,custom',
-            'clickatell_api_key' => 'required_if:sms_method,clickatell',
-            'message_bird_api_key' => 'required_if:sms_method,messageBird',
-            'nexmo_api_key' => 'required_if:sms_method,nexmo',
-            'nexmo_api_secret' => 'required_if:sms_method,nexmo',
-            'infobip_username' => 'required_if:sms_method,infobip',
-            'infobip_password' => 'required_if:sms_method,infobip',
-            'sms_broadcast_username' => 'required_if:sms_method,smsBroadcast',
-            'sms_broadcast_password' => 'required_if:sms_method,smsBroadcast',
-            'text_magic_username' => 'required_if:sms_method,textMagic',
-            'apiv2_key' => 'required_if:sms_method,textMagic',
-            'account_sid' => 'required_if:sms_method,twilio',
-            'auth_token' => 'required_if:sms_method,twilio',
-            'from' => 'required_if:sms_method,twilio',
-            'custom_api_method' => 'required_if:sms_method,custom|in:get,post',
-            'custom_api_url' => 'required_if:sms_method,custom',
-        ]);
-
-        $data = [
-            'name' => $request->sms_method,
-            'clickatell' => [
-                'api_key' => $request->clickatell_api_key,
-            ],
-            'infobip' => [
-                'username' => $request->infobip_username,
-                'password' => $request->infobip_password,
-            ],
-            'message_bird' => [
-                'api_key' => $request->message_bird_api_key,
-            ],
-            'nexmo' => [
-                'api_key' => $request->nexmo_api_key,
-                'api_secret' => $request->nexmo_api_secret,
-            ],
-            'sms_broadcast' => [
-                'username' => $request->sms_broadcast_username,
-                'password' => $request->sms_broadcast_password,
-            ],
-            'twilio' => [
-                'account_sid' => $request->account_sid,
-                'auth_token' => $request->auth_token,
-                'from' => $request->from,
-            ],
-            'text_magic' => [
-                'username' => $request->text_magic_username,
-                'apiv2_key' => $request->apiv2_key,
-            ],
-            'custom' => [
-                'method' => $request->custom_api_method,
-                'url' => $request->custom_api_url,
-                'headers' => [
-                    'name' => $request->custom_header_name ?? [],
-                    'value' => $request->custom_header_value ?? [],
-                ],
-                'body' => [
-                    'name' => $request->custom_body_name ?? [],
-                    'value' => $request->custom_body_value ?? [],
-                ],
-            ],
-        ];
-        $general = gs();
-        $general->sms_config = $data;
-        $general->save();
-
-        $notify[] = ['success', 'Sms settings updated successfully'];
-        return back()->withNotify($notify);
-    }
-
-    public function smsTest(Request $request)
-    {
-        $request->validate(['mobile' => 'required']);
-        if (gs('sn')) {
-            $user = [
-                'username' => $request->mobile,
-                'mobileNumber' => $request->mobile,
-                'fullname' => '',
-            ];
-            notify($user, 'DEFAULT', [
-                'subject' => '',
-                'message' => 'Your sms notification setting is configured successfully for ' . gs('site_name'),
-            ], ['sms'], false);
-        } else {
-            $notify[] = ['info', 'Please enable from general settings'];
-            $notify[] = ['error', 'Your sms notification is disabled'];
-            return back()->withNotify($notify);
-        }
-
-        if (session('sms_error')) {
-            $notify[] = ['error', session('sms_error')];
-        } else {
-            $notify[] = ['success', 'SMS sent to ' . $request->mobile . 'successfully'];
         }
 
         return back()->withNotify($notify);

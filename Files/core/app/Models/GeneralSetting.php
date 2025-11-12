@@ -8,12 +8,11 @@ class GeneralSetting extends Model
 {
     protected $casts = [
         'mail_config' => 'object',
-        'sms_config' => 'object',
         'global_shortcodes' => 'object',
         'config_progress'=>'object',
     ];
 
-    protected $hidden = ['email_template', 'mail_config', 'sms_config', 'system_info'];
+    protected $hidden = ['email_template', 'mail_config', 'system_info'];
 
     public function scopeSiteName($query, $pageTitle)
     {

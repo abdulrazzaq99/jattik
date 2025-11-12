@@ -149,7 +149,7 @@
                 "menu_active": ["admin.report.login.history", "admin.report.login.ipHistory"]
             },
             {
-                "keyword": ["Notification History", "Report", "Notification report", "Notification history", "Notification activity","email log","email history","sms log","sms history"],
+                "keyword": ["Notification History", "Report", "Notification report", "Notification history", "Notification activity","email log","email history"],
                 "title": "Notification History",
                 "route_name": "admin.report.notification.history",
                 "menu_active": "admin.report.notification.history"
@@ -240,9 +240,7 @@
             "admin.setting.sitemap",
             "admin.setting.robot",
             "admin.setting.notification.global.email",
-            "admin.setting.notification.global.sms",
             "admin.setting.notification.email",
-            "admin.setting.notification.sms",
             "admin.setting.notification.templates",
             "admin.setting.notification.template.edit",
             "admin.frontend.index",

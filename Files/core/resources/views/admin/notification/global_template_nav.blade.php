@@ -9,14 +9,5 @@
                 </div>
             </a>
         </div>
-        <div class="col-xxl-3 col-xl-4 col-md-4 col-sm-6">
-            <a href="{{ route('admin.setting.notification.global.sms') }}" class="notification-via {{ menuActive('admin.setting.notification.global.sms') }} d-block mb-4">
-                <span class="active-badge"> <i class="las la-check"></i> </span>
-                <div class="send-via-method">
-                    <i class="las la-mobile-alt"></i>
-                    <h5>@lang('SMS Template')</h5>
-                </div>
-            </a>
-        </div>
     </div>
 </div>
