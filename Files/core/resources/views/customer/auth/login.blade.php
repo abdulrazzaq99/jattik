@@ -12,17 +12,53 @@
                                 <p class="text-white">@lang('Customer Login') @lang('to') {{ __(gs('site_name')) }} @lang('Dashboard')</p>
                             </div>
                             <div class="login-wrapper__body">
+                                @if (session('error'))
+                                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                        <strong>@lang('Error!')&nbsp;</strong> {{ session('error') }}
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    </div>
+                                @endif
+
+                                @if (session('success'))
+                                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                        <strong>@lang('Success!')&nbsp;</strong> {{ session('success') }}
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    </div>
+                                @endif
+
+                                @if ($errors->any())
+                                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                        <strong>@lang('Error!')&nbsp;</strong>
+                                        <ul class="mb-0">
+                                            @foreach ($errors->all() as $error)
+                                                <li>{{ $error }}</li>
+                                            @endforeach
+                                        </ul>
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    </div>
+                                @endif
+
                                 <form action="{{ route('customer.login.post') }}" method="POST" class="cmn-form mt-30 verify-gcaptcha login-form">
                                     @csrf
 
                                     <div class="form-group">
                                         <label>@lang('Email or Mobile Number')</label>
-                                        <input type="text" class="form-control" name="contact" value="{{ old('contact') }}" required>
+                                        <input type="text" class="form-control @error('contact') is-invalid @enderror" name="contact" value="{{ old('contact') }}" required>
+                                        @error('contact')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
                                     </div>
 
                                     <div class="form-group">
                                         <label>@lang('Password')</label>
-                                        <input type="password" class="form-control" name="password" required>
+                                        <input type="password" class="form-control @error('password') is-invalid @enderror" name="password" required>
+                                        @error('password')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
                                     </div>
 
                                     <x-captcha />

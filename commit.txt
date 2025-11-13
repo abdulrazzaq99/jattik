@@ -1,46 +1,26 @@
-1. Admin Login (/admin)
+1. Backend Error Messages (in Controllers)
 
-  - Added custom validation messages for empty username/password fields
-  - Shows "Invalid username or password. Please check your credentials and try again."
-   for failed login attempts
-  - Preserves the username field after failed login
+  - Added custom sendFailedLoginResponse() method to all login controllers
+  - Shows clear error: "Invalid username/email or password. Please check your
+  credentials and try again."
+  - Added custom validation messages for empty fields
 
-  2. Manager Login (/manager)
+  2. Frontend Inline Error Display (in Views)
 
-  - Added custom validation messages for empty username/email/password fields
-  - Shows "Invalid username/email or password. Please check your credentials and try
-  again." for failed login attempts
-  - Preserves the username field after failed login
-  - Already has account deactivation and role mismatch error handling
+  Added visible error alerts to all login pages that show:
+  - Validation errors (empty fields, etc.)
+  - Login failure errors (wrong password/username)
+  - Session flash messages
 
-  3. Staff Login (/staff)
+  The errors now appear as:
+  - Bootstrap alert boxes at the top of the login form (red error boxes)
+  - Field-level validation with red borders and error text under each field
+  - Toast notifications (the existing iziToast system)
 
-  - Added custom validation messages for empty username/email/password fields
-  - Shows "Invalid username/email or password. Please check your credentials and try
-  again." for failed login attempts
-  - Preserves the username field after failed login
-  - Already has account deactivation and role mismatch error handling
+  3. Files Modified:
 
-  4. Customer Login (/customer)
-
-  - Enhanced existing error messages with more specific feedback:
-    - "No account found with this email or mobile number. Please check and try again."
-   - when account doesn't exist
-    - "Incorrect password. Please try again or use the forgot password option." - when
-   password is wrong
-    - "Your account is inactive. Please contact support for assistance." - when
-  account is deactivated
-  - Added custom validation messages for empty contact/password fields
-  - Preserves the contact field after failed login
-
-  Error Types Handled:
-
-  1. Empty fields - User-friendly validation messages
-  2. Invalid credentials - Clear message about wrong username/email or password
-  3. Account deactivated - Specific message for banned/inactive accounts
-  4. Role mismatch - Prevents managers logging into staff panel and vice versa
-  5. Too many attempts - Laravel's built-in throttling with lockout messages
-  6. Invalid captcha - Already handled
-
-  All errors are displayed using the existing iziToast notification system at the
-  top-right of the page.
+  - Admin/Auth/LoginController.php (Lines 99-105)
+  - Manager/Auth/LoginController.php (Lines 104-110)
+  - Staff/Auth/LoginController.php (Lines 103-109)
+  - Customer/Auth/LoginController.php (Lines 35-66)
+  - All 4 login blade views with inline error displays

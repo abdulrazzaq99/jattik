@@ -13,17 +13,44 @@
                                     @lang('Dashboard')</p>
                             </div>
                             <div class="login-wrapper__body">
+                                @if ($errors->any())
+                                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                        <strong>@lang('Error!')&nbsp;</strong>
+                                        <ul class="mb-0">
+                                            @foreach ($errors->all() as $error)
+                                                <li>{{ $error }}</li>
+                                            @endforeach
+                                        </ul>
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    </div>
+                                @endif
+
                                 <form action="{{ route('manager.login') }}" method="POST"
                                     class="cmn-form mt-30 verify-gcaptcha login-form">
                                     @csrf
                                     <div class="form-group">
                                         <label>@lang('Username')</label>
-                                        <input type="text" class="form-control" value="{{ old('username') }}"
+                                        <input type="text" class="form-control @error('username') is-invalid @enderror @error('email') is-invalid @enderror" value="{{ old('username') }}"
                                             name="username" required>
+                                        @error('username')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                        @error('email')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
                                     </div>
                                     <div class="form-group">
                                         <label>@lang('Password')</label>
-                                        <input type="password" class="form-control" name="password" required>
+                                        <input type="password" class="form-control @error('password') is-invalid @enderror" name="password" required>
+                                        @error('password')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
                                     </div>
                                     <x-captcha />
                                     <div class="d-flex flex-wrap justify-content-between">
