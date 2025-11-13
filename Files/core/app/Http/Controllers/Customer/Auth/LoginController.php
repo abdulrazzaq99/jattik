@@ -35,6 +35,9 @@ class LoginController extends Controller
         $request->validate([
             'contact' => 'required|string', // Can be email or mobile
             'password' => 'required|string',
+        ], [
+            'contact.required' => 'Please enter your email or mobile number.',
+            'password.required' => 'Please enter your password.',
         ]);
 
         // Find customer by email or mobile
@@ -43,17 +46,23 @@ class LoginController extends Controller
             ->first();
 
         if (!$customer) {
-            return back()->with('error', 'Invalid credentials.');
+            return back()
+                ->withInput($request->only('contact'))
+                ->with('error', 'No account found with this email or mobile number. Please check and try again.');
         }
 
         // Check if customer is active
         if (!$customer->isActive()) {
-            return back()->with('error', 'Your account is inactive. Please contact support.');
+            return back()
+                ->withInput($request->only('contact'))
+                ->with('error', 'Your account is inactive. Please contact support for assistance.');
         }
 
         // Check password - if password is null, allow login (for customers created by staff)
         if ($customer->password && !\Hash::check($request->password, $customer->password)) {
-            return back()->with('error', 'Invalid credentials.');
+            return back()
+                ->withInput($request->only('contact'))
+                ->with('error', 'Incorrect password. Please try again or use the forgot password option.');
         }
 
         // If password is null (old customers), set the password now

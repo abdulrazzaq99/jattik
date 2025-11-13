@@ -78,6 +78,9 @@ class LoginController extends Controller
         $validator = Validator::make($request->all(), [
             $this->username() => 'required|string',
             'password' => 'required|string',
+        ], [
+            'username.required' => 'Please enter your username or email.',
+            'password.required' => 'Please enter your password.',
         ]);
 
         if ($validator->fails()) {
@@ -92,6 +95,20 @@ class LoginController extends Controller
 
         $notify[] = ['success', 'You have been logged out.'];
         return redirect()->route('staff.login')->withNotify($notify);
+    }
+
+    /**
+     * Get the failed login response instance.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    protected function sendFailedLoginResponse(Request $request)
+    {
+        $notify[] = ['error', 'Invalid username/email or password. Please check your credentials and try again.'];
+        return back()
+            ->withInput($request->only('username', 'remember'))
+            ->withNotify($notify);
     }
 
     public function authenticated(Request $request, $user)

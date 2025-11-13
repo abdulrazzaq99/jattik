@@ -54,6 +54,23 @@ class LoginController extends Controller
         return 'username';
     }
 
+    /**
+     * Validate the user login request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return void
+     */
+    protected function validateLogin(Request $request)
+    {
+        $request->validate([
+            $this->username() => 'required|string',
+            'password' => 'required|string',
+        ], [
+            'username.required' => 'Please enter your username.',
+            'password.required' => 'Please enter your password.',
+        ]);
+    }
+
     public function login(Request $request)
     {
 
@@ -88,6 +105,20 @@ class LoginController extends Controller
         $this->incrementLoginAttempts($request);
 
         return $this->sendFailedLoginResponse($request);
+    }
+
+    /**
+     * Get the failed login response instance.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    protected function sendFailedLoginResponse(Request $request)
+    {
+        $notify[] = ['error', 'Invalid username or password. Please check your credentials and try again.'];
+        return back()
+            ->withInput($request->only($this->username(), 'remember'))
+            ->withNotify($notify);
     }
 
 

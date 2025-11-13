@@ -1,0 +1,46 @@
+1. Admin Login (/admin)
+
+  - Added custom validation messages for empty username/password fields
+  - Shows "Invalid username or password. Please check your credentials and try again."
+   for failed login attempts
+  - Preserves the username field after failed login
+
+  2. Manager Login (/manager)
+
+  - Added custom validation messages for empty username/email/password fields
+  - Shows "Invalid username/email or password. Please check your credentials and try
+  again." for failed login attempts
+  - Preserves the username field after failed login
+  - Already has account deactivation and role mismatch error handling
+
+  3. Staff Login (/staff)
+
+  - Added custom validation messages for empty username/email/password fields
+  - Shows "Invalid username/email or password. Please check your credentials and try
+  again." for failed login attempts
+  - Preserves the username field after failed login
+  - Already has account deactivation and role mismatch error handling
+
+  4. Customer Login (/customer)
+
+  - Enhanced existing error messages with more specific feedback:
+    - "No account found with this email or mobile number. Please check and try again."
+   - when account doesn't exist
+    - "Incorrect password. Please try again or use the forgot password option." - when
+   password is wrong
+    - "Your account is inactive. Please contact support for assistance." - when
+  account is deactivated
+  - Added custom validation messages for empty contact/password fields
+  - Preserves the contact field after failed login
+
+  Error Types Handled:
+
+  1. Empty fields - User-friendly validation messages
+  2. Invalid credentials - Clear message about wrong username/email or password
+  3. Account deactivated - Specific message for banned/inactive accounts
+  4. Role mismatch - Prevents managers logging into staff panel and vice versa
+  5. Too many attempts - Laravel's built-in throttling with lockout messages
+  6. Invalid captcha - Already handled
+
+  All errors are displayed using the existing iziToast notification system at the
+  top-right of the page.
