@@ -35,7 +35,8 @@ class AddressController extends Controller
      */
     public function create()
     {
-        return view('customer.address.create');
+        $pageTitle = 'Add New Address';
+        return view('customer.address.create', compact('pageTitle'));
     }
 
     /**
@@ -65,7 +66,8 @@ class AddressController extends Controller
             return redirect()->route('customer.addresses.index')
                 ->with('success', 'Address added successfully');
         } catch (\Exception $e) {
-            return back()->withInput()
+            return redirect()->route('customer.addresses.create')
+                ->withInput()
                 ->with('error', 'Failed to add address: ' . $e->getMessage());
         }
     }
@@ -114,7 +116,8 @@ class AddressController extends Controller
             return redirect()->route('customer.addresses.index')
                 ->with('success', 'Address updated successfully');
         } catch (\Exception $e) {
-            return back()->withInput()
+            return redirect()->route('customer.addresses.edit', $address)
+                ->withInput()
                 ->with('error', 'Failed to update address: ' . $e->getMessage());
         }
     }
@@ -132,9 +135,9 @@ class AddressController extends Controller
         try {
             $this->addressService->setAsDefault($address);
 
-            return back()->with('success', 'Default address updated');
+            return redirect()->route('customer.addresses.index')->with('success', 'Default address updated');
         } catch (\Exception $e) {
-            return back()->with('error', 'Failed to set default address: ' . $e->getMessage());
+            return redirect()->route('customer.addresses.index')->with('error', 'Failed to set default address: ' . $e->getMessage());
         }
     }
 
@@ -154,7 +157,7 @@ class AddressController extends Controller
             return redirect()->route('customer.addresses.index')
                 ->with('success', 'Address deleted successfully');
         } catch (\Exception $e) {
-            return back()->with('error', 'Failed to delete address: ' . $e->getMessage());
+            return redirect()->route('customer.addresses.index')->with('error', 'Failed to delete address: ' . $e->getMessage());
         }
     }
 }

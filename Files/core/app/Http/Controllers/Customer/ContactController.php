@@ -42,7 +42,7 @@ class ContactController extends Controller
         ContactMessage::create($validated);
 
         // Notify admins
-        $admins = \App\Models\Admin::where('status', 1)->get();
+        $admins = \App\Models\Admin::all();
         foreach ($admins as $admin) {
             notify($admin, 'NEW_CONTACT_MESSAGE', [
                 'name' => $validated['name'],

@@ -21,11 +21,7 @@ class OtpService
      */
     public function generateCode(int $length = 6): string
     {
-        // Default OTP set to 123456 for development/testing
-        return '123456';
-
-        // Original random generation (commented out)
-        // return str_pad((string) random_int(0, 999999), $length, '0', STR_PAD_LEFT);
+        return str_pad((string) random_int(0, 999999), $length, '0', STR_PAD_LEFT);
     }
 
     /**

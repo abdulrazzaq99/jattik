@@ -27,8 +27,15 @@ class SupportController extends Controller
         $customer = Auth::guard('customer')->user();
         $issues = $this->supportService->getCustomerIssues($customer);
 
+        // Calculate statistics
+        $allIssues = SupportIssue::where('customer_id', $customer->id)->get();
+        $openCount = $allIssues->where('status', 0)->count();
+        $inProgressCount = $allIssues->where('status', 1)->count();
+        $resolvedCount = $allIssues->where('status', 2)->count();
+        $totalIssues = $allIssues->count();
+
         $pageTitle = 'My Issues';
-        return view('customer.support.issues', compact('pageTitle', 'issues'));
+        return view('customer.support.issues', compact('pageTitle', 'issues', 'openCount', 'inProgressCount', 'resolvedCount', 'totalIssues'));
     }
 
     /**
@@ -39,13 +46,13 @@ class SupportController extends Controller
         $customer = Auth::guard('customer')->user();
 
         // Get customer's shipments for issue reporting
-        $shipments = CourierInfo::where(function($query) use ($customer) {
+        $recentCouriers = CourierInfo::where(function($query) use ($customer) {
             $query->where('sender_customer_id', $customer->id)
                   ->orWhere('receiver_customer_id', $customer->id);
         })->latest()->limit(20)->get();
 
         $pageTitle = 'Report an Issue';
-        return view('customer.support.create_issue', compact('pageTitle', 'shipments'));
+        return view('customer.support.create_issue', compact('pageTitle', 'recentCouriers'));
     }
 
     /**
@@ -101,8 +108,15 @@ class SupportController extends Controller
         $customer = Auth::guard('customer')->user();
         $claims = $this->supportService->getCustomerClaims($customer);
 
+        // Calculate statistics
+        $allClaims = SupportClaim::where('customer_id', $customer->id)->get();
+        $pendingCount = $allClaims->whereIn('status', [0, 1])->count(); // Pending + Under Review
+        $approvedCount = $allClaims->whereIn('status', [2, 4])->count(); // Approved + Paid
+        $rejectedCount = $allClaims->where('status', 3)->count();
+        $totalApproved = $allClaims->whereIn('status', [2, 4])->sum('approved_amount');
+
         $pageTitle = 'My Claims';
-        return view('customer.support.claims', compact('pageTitle', 'claims'));
+        return view('customer.support.claims', compact('pageTitle', 'claims', 'pendingCount', 'approvedCount', 'rejectedCount', 'totalApproved'));
     }
 
     /**
@@ -113,19 +127,19 @@ class SupportController extends Controller
         $customer = Auth::guard('customer')->user();
 
         // Get customer's shipments
-        $shipments = CourierInfo::where(function($query) use ($customer) {
+        $recentCouriers = CourierInfo::where(function($query) use ($customer) {
             $query->where('sender_customer_id', $customer->id)
                   ->orWhere('receiver_customer_id', $customer->id);
         })->latest()->limit(20)->get();
 
         // Get customer's issues
-        $issues = SupportIssue::where('customer_id', $customer->id)
+        $recentIssues = SupportIssue::where('customer_id', $customer->id)
             ->whereNull('claim_id')
             ->latest()
             ->get();
 
         $pageTitle = 'Submit a Claim';
-        return view('customer.support.create_claim', compact('pageTitle', 'shipments', 'issues'));
+        return view('customer.support.create_claim', compact('pageTitle', 'recentCouriers', 'recentIssues'));
     }
 
     /**

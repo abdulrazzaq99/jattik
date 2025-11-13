@@ -24,8 +24,15 @@ class NotificationController extends Controller
         $customer = Auth::guard('customer')->user();
         $notifications = $this->notificationService->getAllNotifications($customer);
 
+        // Calculate statistics
+        $allNotifications = \App\Models\ShipmentNotification::where('customer_id', $customer->id)->get();
+        $totalNotifications = $allNotifications->count();
+        $unreadCount = $allNotifications->where('is_read', false)->count();
+        $readCount = $allNotifications->where('is_read', true)->count();
+        $todayCount = $allNotifications->where('created_at', '>=', now()->startOfDay())->count();
+
         $pageTitle = 'My Notifications';
-        return view('customer.notifications.index', compact('pageTitle', 'notifications'));
+        return view('customer.notifications.index', compact('pageTitle', 'notifications', 'totalNotifications', 'unreadCount', 'readCount', 'todayCount'));
     }
 
     /**

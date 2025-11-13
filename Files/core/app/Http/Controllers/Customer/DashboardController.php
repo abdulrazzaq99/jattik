@@ -98,7 +98,7 @@ class DashboardController extends Controller
             'postal_code' => $request->postal_code,
         ]);
 
-        return back()->with('success', 'Profile updated successfully!');
+        return redirect()->route('customer.profile')->with('success', 'Profile updated successfully!');
     }
 
     /**
@@ -122,7 +122,7 @@ class DashboardController extends Controller
                 ->first();
 
             if (!$courier) {
-                return back()->with('error', 'Courier not found or you do not have access to this courier.');
+                return redirect()->route('customer.track')->with('error', 'Courier not found or you do not have access to this courier.');
             }
         }
 
@@ -184,13 +184,13 @@ class DashboardController extends Controller
 
         // Verify current password
         if (!Hash::check($request->current_password, $customer->password)) {
-            return back()->with('error', 'Current password is incorrect.');
+            return redirect()->route('customer.password')->with('error', 'Current password is incorrect.');
         }
 
         // Update password
         $customer->password = Hash::make($request->password);
         $customer->save();
 
-        return back()->with('success', 'Password changed successfully!');
+        return redirect()->route('customer.password')->with('success', 'Password changed successfully!');
     }
 }

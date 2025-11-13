@@ -74,7 +74,7 @@
 
                 <h6 class="mb-3">@lang('Plan Features')</h6>
                 <ul class="list-unstyled">
-                    @foreach(json_decode($plan->features, true) as $feature)
+                    @foreach($plan->features as $feature)
                         <li class="py-2">
                             <i class="las la-check-circle text--success"></i>
                             <span>{{ $feature }}</span>

@@ -120,7 +120,8 @@ class ShipmentManagementController extends Controller
 
             // Check if new date is within max holding period
             if ($newDate->greaterThan($holding->max_holding_date)) {
-                return back()->with('error', 'Selected date exceeds maximum holding period (90 days)');
+                return redirect()->route('customer.shipment.holding.extend', $holding)
+                    ->with('error', 'Selected date exceeds maximum holding period (90 days)');
             }
 
             $success = $this->warehouseService->extendHoldingDate($holding, $newDate);
@@ -129,10 +130,12 @@ class ShipmentManagementController extends Controller
                 return redirect()->route('customer.shipment.holdings')
                     ->with('success', 'Shipping date extended successfully');
             } else {
-                return back()->with('error', 'Failed to extend shipping date');
+                return redirect()->route('customer.shipment.holding.extend', $holding)
+                    ->with('error', 'Failed to extend shipping date');
             }
         } catch (\Exception $e) {
-            return back()->with('error', 'Error: ' . $e->getMessage());
+            return redirect()->route('customer.shipment.holding.extend', $holding)
+                ->with('error', 'Error: ' . $e->getMessage());
         }
     }
 
@@ -193,9 +196,10 @@ class ShipmentManagementController extends Controller
             $quotes = $this->quoteService->getMultipleQuotes($customer, $shipmentData);
 
             $pageTitle = 'Shipping Estimates';
-        return view('customer.shipment.estimates', compact('pageTitle', 'quotes', 'shipmentData'));
+            return view('customer.shipment.estimates', compact('pageTitle', 'quotes', 'shipmentData'));
         } catch (\Exception $e) {
-            return back()->withInput()
+            return redirect()->route('customer.shipment.calculator')
+                ->withInput()
                 ->with('error', 'Error calculating estimates: ' . $e->getMessage());
         }
     }
@@ -236,7 +240,8 @@ class ShipmentManagementController extends Controller
             return redirect()->route('customer.shipment.quotes')
                 ->with('success', 'Quote saved successfully');
         } catch (\Exception $e) {
-            return back()->withInput()
+            return redirect()->route('customer.shipment.calculator')
+                ->withInput()
                 ->with('error', 'Error saving quote: ' . $e->getMessage());
         }
     }
