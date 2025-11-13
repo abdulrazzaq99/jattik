@@ -2,39 +2,39 @@
 @section('panel')
     <div class="row gy-4">
         <div class="col-xxl-4 col-sm-6">
-            <x-widget style="6" link="{{ route('staff.courier.sent.queue') }}" title="Send in Queue" icon="las la-hourglass-start"
+            <x-widget style="6" link="{{ route('staff.courier.sent.queue') }}" title="{{ __('Sent In Queue') }}" icon="las la-hourglass-start"
                 value="{{ $sentInQueue }}" bg="purple" type="2"  />
         </div>
         <div class="col-xxl-4 col-sm-6">
-            <x-widget style="6" link="{{ route('staff.courier.upcoming') }}" title="Upcoming Courier" icon="las la-history"
+            <x-widget style="6" link="{{ route('staff.courier.upcoming') }}" title="{{ __('Upcoming Courier') }}" icon="las la-history"
                 value="{{ $upcomingCourier }}" bg="cyan" type="2"  />
         </div>
         <div class="col-xxl-4 col-sm-6">
-            <x-widget style="6" link="{{ route('staff.courier.dispatch') }}" title="Total Shipping Courier" icon="las la-dolly"
+            <x-widget style="6" link="{{ route('staff.courier.dispatch') }}" title="{{ __('Total Shipping Courier') }}" icon="las la-dolly"
                 value="{{ $dispatchCourier }}" bg="primary" type="2"  />
         </div>
         <div class="col-xxl-4 col-sm-6">
-            <x-widget style="6" link="{{ route('staff.courier.delivery.queue') }}" title="Delivery in Queue" icon="lab la-accessible-icon"
+            <x-widget style="6" link="{{ route('staff.courier.delivery.queue') }}" title="{{ __('Delivery in queue') }}" icon="lab la-accessible-icon"
                 value="{{ $deliveryInQueue }}" bg="pink" type="2"  />
         </div>
         <div class="col-xxl-4 col-sm-6">
-            <x-widget style="6" link="{{ route('staff.courier.manage.sent.list') }}" title="Total Sent" icon="las la-check-double"
+            <x-widget style="6" link="{{ route('staff.courier.manage.sent.list') }}" title="{{ __('Total Sent') }}" icon="las la-check-double"
                 value="{{ $totalSent }}" bg="green" type="2"  />
         </div>
         <div class="col-xxl-4 col-sm-6">
-            <x-widget style="6" link="{{ route('staff.courier.manage.delivered') }}" title="Total Delivered" icon="las la-list-alt"
+            <x-widget style="6" link="{{ route('staff.courier.manage.delivered') }}" title="{{ __('Total Delivered') }}" icon="las la-list-alt"
                 value="{{ $totalDelivery }}" bg="deep-purple" type="2"  />
         </div>
         <div class="col-xxl-4 col-sm-6">
-            <x-widget style="6" link="{{ route('staff.branch.index') }}" title="Total Branch" icon="las la-university" value="{{ $branchCount }}"
+            <x-widget style="6" link="{{ route('staff.branch.index') }}" title="{{ __('Total Branch') }}" icon="las la-university" value="{{ $branchCount }}"
                 bg="lime" type="2"  />
         </div>
         <div class="col-xxl-4 col-sm-6">
-            <x-widget style="6" link="{{ route('staff.cash.courier.income') }}" title="Total Cash Collection" icon="las la-money-bill-wave"
+            <x-widget style="6" link="{{ route('staff.cash.courier.income') }}" title="{{ __('Total Cash Collection') }}" icon="las la-money-bill-wave"
                 value="{{ showAmount($cashCollection) }}" bg="orange" type="2"  />
         </div>
         <div class="col-xxl-4 col-sm-6">
-            <x-widget style="6" link="{{ route('staff.courier.manage.list') }}" title="All Courier" icon="las la-shipping-fast"
+            <x-widget style="6" link="{{ route('staff.courier.manage.list') }}" title="{{ __('All Courier') }}" icon="las la-shipping-fast"
                 value="{{ $totalCourier }}" bg="teal" type="2"  />
         </div>
     </div>

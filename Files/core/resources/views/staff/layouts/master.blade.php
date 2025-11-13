@@ -1,6 +1,6 @@
 <!-- meta tags and other links -->
 <!DOCTYPE html>
-<html lang="{{ config('app.locale') }}" itemscope itemtype="http://schema.org/WebPage">
+<html lang="{{ config('app.locale') }}" dir="{{ getLanguageDirection() }}" itemscope itemtype="http://schema.org/WebPage">
 
 <head>
     <meta charset="UTF-8">

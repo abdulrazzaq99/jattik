@@ -4,20 +4,20 @@
     {{-- Statistics Widgets --}}
     <div class="row gy-4">
         <div class="col-xxl-3 col-sm-6">
-            <x-widget style="6" link="{{ route('customer.sent.couriers') }}" icon="las la-paper-plane" title="Total Sent"
+            <x-widget style="6" link="{{ route('customer.sent.couriers') }}" icon="las la-paper-plane" title="{{ __('Total Sent') }}"
                 value="{{ $totalSent }}" bg="green" outline="true"/>
         </div>
         <div class="col-xxl-3 col-sm-6">
-            <x-widget style="6" link="{{ route('customer.received.couriers') }}" icon="las la-inbox" title="Total Received"
+            <x-widget style="6" link="{{ route('customer.received.couriers') }}" icon="las la-inbox" title="{{ __('Total Received') }}"
                 value="{{ $totalReceived }}" bg="primary" outline="true" />
         </div>
         <div class="col-xxl-3 col-sm-6">
             <x-widget style="6" link="{{ route('customer.sent.couriers') }}" icon="las la-truck"
-                title="Active Couriers" value="{{ $activeCouriers }}" bg="orange" outline="true" />
+                title="{{ __('Active Couriers') }}" value="{{ $activeCouriers }}" bg="orange" outline="true" />
         </div>
         <div class="col-xxl-3 col-sm-6">
             <x-widget style="6" link="{{ route('customer.received.couriers') }}" icon="las la-check-circle"
-                title="Delivered" value="{{ $deliveredCouriers }}" bg="info" outline="true" />
+                title="{{ __('Delivered') }}" value="{{ $deliveredCouriers }}" bg="info" outline="true" />
         </div>
     </div>
 

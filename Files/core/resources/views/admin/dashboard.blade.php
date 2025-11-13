@@ -3,35 +3,35 @@
 @section('panel')
     <div class="row gy-4">
         <div class="col-xxl-3 col-sm-6">
-            <x-widget style="6" link="{{ route('admin.courier.info.index'). '?status=0' }}" icon="las la-hourglass-start" title="Sent In Queue"
+            <x-widget style="6" link="{{ route('admin.courier.info.index'). '?status=0' }}" icon="las la-hourglass-start" title="{{ __('Sent In Queue') }}"
                 value="{{ $sentInQueue }}" bg="purple" outline="true"/>
         </div>
         <div class="col-xxl-3 col-sm-6">
-            <x-widget style="6" link="{{ route('admin.courier.info.index') . '?status=1' }}" icon="las la-dolly" title="Shipped Courier"
+            <x-widget style="6" link="{{ route('admin.courier.info.index') . '?status=1' }}" icon="las la-dolly" title="{{ __('Shipped Courier') }}"
                 value="{{ $shippingCourier }}" bg="green" outline="true" />
         </div>
         <div class="col-xxl-3 col-sm-6">
             <x-widget style="6" link="{{ route('admin.courier.info.index'). '?status=2' }}" icon="lab la-accessible-icon"
-                title="Waiting for Delivery" value="{{ $deliveryInQueue }}" bg="deep-purple" outline="true" />
+                title="{{ __('Waiting for Delivery') }}" value="{{ $deliveryInQueue }}" bg="deep-purple" outline="true" />
         </div>
         <div class="col-xxl-3 col-sm-6">
             <x-widget style="6" link="{{ route('admin.courier.info.index') . '?status=3' }}" icon="las  la-list-alt"
-                title="Delivered" value="{{ $delivered }}" bg="info" outline="true" />
+                title="{{ __('Delivered') }}" value="{{ $delivered }}" bg="info" outline="true" />
         </div>
     </div>
 
     <div class="row gy-4 mt-2">
         <div class="col-xxl-3 col-sm-6">
-            <x-widget style="6" link="{{ route('admin.branch.index') }}" title="Total Branch" icon="las la-university" value="{{ $branchCount }}" bg="primary" outline="true" />
+            <x-widget style="6" link="{{ route('admin.branch.index') }}" title="{{ __('Total Branch') }}" icon="las la-university" value="{{ $branchCount }}" bg="primary" outline="true" />
         </div>
         <div class="col-xxl-3 col-sm-6">
-            <x-widget style="6" link="{{ route('admin.branch.manager.index') }}" title="Total manager" icon="las la-user-check" value="{{ $managerCount }}" bg="cyan" outline="true" />
+            <x-widget style="6" link="{{ route('admin.branch.manager.index') }}" title="{{ __('Total manager') }}" icon="las la-user-check" value="{{ $managerCount }}" bg="cyan" outline="true" />
         </div>
         <div class="col-xxl-3 col-sm-6">
-            <x-widget style="6" link="{{ route('admin.courier.branch.income') }}" title="Total Income" icon="las la-money-bill-wave" value="{{ showAmount($totalIncome) }}" bg="orange" outline="true" />
+            <x-widget style="6" link="{{ route('admin.courier.branch.income') }}" title="{{ __('Total Income') }}" icon="las la-money-bill-wave" value="{{ showAmount($totalIncome) }}" bg="orange" outline="true" />
         </div>
         <div class="col-xxl-3 col-sm-6">
-            <x-widget style="6" link="{{ route('admin.courier.info.index') }}" title="Total Courier" icon="las la-dolly-flatbed" value="{{ $courierInfoCount }}" bg="pink"
+            <x-widget style="6" link="{{ route('admin.courier.info.index') }}" title="{{ __('Total Courier') }}" icon="las la-dolly-flatbed" value="{{ $courierInfoCount }}" bg="pink"
                 outline="true" />
         </div>
     </div>

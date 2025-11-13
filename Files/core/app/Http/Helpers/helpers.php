@@ -340,6 +340,17 @@ function getDefaultLang(){
     return Language::where('is_default', Status::YES)->first()->code ?? 'en';
 }
 
+function getLanguageDirection(){
+    $lang = session()->get('lang');
+
+    if(!$lang){
+        $lang = getDefaultLang();
+    }
+
+    $language = Language::where('code', $lang)->first();
+    return $language && $language->text_align == 1 ? 'rtl' : 'ltr';
+}
+
 function getContent($dataKeys, $singleQuery = false, $limit = null, $orderById = false)
 {
     $templateName = activeTemplateName();

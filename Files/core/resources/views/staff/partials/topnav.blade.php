@@ -31,6 +31,28 @@
                     <a href="{{ route('home') }}" target="_blank"><i class="las la-globe"></i></a>
                 </button>
             </li>
+            @if(gs('multi_language'))
+            <li class="dropdown language-dropdown">
+                @php
+                    $languages = App\Models\Language::all();
+                    $currentLang = session('lang', 'en');
+                    $currentLanguage = $languages->where('code', $currentLang)->first() ?? $languages->where('is_default', 1)->first();
+                @endphp
+                <button type="button" class="primary--layer d-flex align-items-center" data-bs-toggle="dropdown" data-display="static" aria-haspopup="true" aria-expanded="false" style="gap: 8px; padding: 8px 12px;">
+                    <img src="{{ getImage(getFilePath('language') . '/' . $currentLanguage->image, getFileSize('language')) }}" alt="{{ $currentLanguage->name }}" style="width: 24px; height: 24px; object-fit: cover; border-radius: 4px;">
+                    <span style="font-size: 14px; font-weight: 500;">{{ __($currentLanguage->name) }}</span>
+                    <i class="las la-angle-down" style="font-size: 14px;"></i>
+                </button>
+                <div class="dropdown-menu dropdown-menu--sm p-0 border-0 box--shadow1 dropdown-menu-right">
+                    @foreach($languages as $language)
+                        <a href="{{ route('home') }}/change/{{ $language->code }}" class="dropdown-menu__item d-flex align-items-center px-3 py-2 @if($currentLang == $language->code) active @endif">
+                            <img src="{{ getImage(getFilePath('language') . '/' . $language->image, getFileSize('language')) }}" alt="{{ $language->name }}" class="me-2" style="width: 24px; height: 24px; object-fit: cover; border-radius: 4px;">
+                            <span class="dropdown-menu__caption">{{ __($language->name) }}</span>
+                        </a>
+                    @endforeach
+                </div>
+            </li>
+            @endif
             <li class="dropdown d-flex profile-dropdown">
                 <button type="button" data-bs-toggle="dropdown" data-display="static" aria-haspopup="true"
                     aria-expanded="false">
