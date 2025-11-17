@@ -39,6 +39,12 @@ class RegisterController extends Controller
      */
     public function register(Request $request)
     {
+        // Verify CAPTCHA
+        if (!verifyCaptcha()) {
+            $notify[] = ['error', 'Invalid captcha provided'];
+            return back()->withNotify($notify)->withInput();
+        }
+
         $request->validate([
             'firstname' => 'required|string|max:40',
             'lastname' => 'required|string|max:40',
@@ -89,12 +95,21 @@ class RegisterController extends Controller
     public function showVerifyForm()
     {
         if (!session()->has('registration_data')) {
-            return redirect()->route('customer.register')->with('error', 'Registration session expired. Please start again.');
+            $notify[] = ['error', 'Registration session expired. Please start again.'];
+            return redirect()->route('customer.register')->withNotify($notify);
         }
 
         $pageTitle = 'Verify OTP';
         $registrationData = session('registration_data');
-        return view('customer.auth.verify_otp', compact('pageTitle', 'registrationData'));
+
+        // Get current OTP log to show attempts
+        $contact = $registrationData['otp_method'] === 'email'
+            ? $registrationData['email']
+            : $registrationData['mobile'];
+
+        $otpLog = \App\Models\OtpLog::recentFor($contact, 'registration')->first();
+
+        return view('customer.auth.verify_otp', compact('pageTitle', 'registrationData', 'otpLog'));
     }
 
     /**
@@ -104,10 +119,14 @@ class RegisterController extends Controller
     {
         $request->validate([
             'otp_code' => 'required|string|size:6',
+        ], [
+            'otp_code.required' => 'Please enter the OTP code.',
+            'otp_code.size' => 'OTP code must be exactly 6 digits.',
         ]);
 
         if (!session()->has('registration_data')) {
-            return back()->with('error', 'Registration session expired. Please start again.');
+            $notify[] = ['error', 'Registration session expired. Please start again.'];
+            return redirect()->route('customer.register')->withNotify($notify);
         }
 
         $registrationData = session('registration_data');
@@ -117,11 +136,36 @@ class RegisterController extends Controller
             ? $registrationData['email']
             : $registrationData['mobile'];
 
+        // Check if there's a pending OTP
+        $pendingOtp = \App\Models\OtpLog::recentFor($contact, 'registration')->first();
+
+        if (!$pendingOtp) {
+            $notify[] = ['error', 'No active OTP found. Please request a new one.'];
+            return redirect()->route('customer.register.verify')->withNotify($notify);
+        }
+
+        // Check if OTP has expired
+        if ($pendingOtp->isExpired()) {
+            $pendingOtp->markAsExpired();
+            $notify[] = ['error', 'OTP has expired. Please request a new one.'];
+            return redirect()->route('customer.register.verify')->withNotify($notify);
+        }
+
+        // Check if max attempts reached
+        if ($pendingOtp->maxAttemptsReached()) {
+            $notify[] = ['error', 'Maximum verification attempts reached. Please request a new OTP.'];
+            return redirect()->route('customer.register.verify')->withNotify($notify);
+        }
+
         // Verify OTP
         $otpLog = $this->otpService->verify($contact, $request->otp_code, 'registration');
 
         if (!$otpLog) {
-            return back()->with('error', 'Invalid or expired OTP. Please try again.');
+            // Refresh the OTP log to get updated attempts count
+            $pendingOtp->refresh();
+            $remainingAttempts = 3 - $pendingOtp->attempts;
+            $notify[] = ['error', "Invalid OTP code. You have {$remainingAttempts} attempt(s) remaining."];
+            return redirect()->route('customer.register.verify')->withNotify($notify);
         }
 
         // Create customer account
@@ -162,7 +206,8 @@ class RegisterController extends Controller
     public function resendOtp(Request $request)
     {
         if (!session()->has('registration_data')) {
-            return back()->with('error', 'Registration session expired. Please start again.');
+            $notify[] = ['error', 'Registration session expired. Please start again.'];
+            return redirect()->route('customer.register')->withNotify($notify);
         }
 
         $registrationData = session('registration_data');
@@ -172,14 +217,36 @@ class RegisterController extends Controller
             ? $registrationData['email']
             : $registrationData['mobile'];
 
-        // Resend OTP
-        $this->otpService->resend(
-            null,
-            $contact,
-            $registrationData['otp_method'],
-            'registration'
-        );
+        // Rate limiting: Check if last OTP was sent less than 30 seconds ago
+        $lastOtp = \App\Models\OtpLog::where(function ($q) use ($contact) {
+            $q->where('email', $contact)
+              ->orWhere('mobile', $contact);
+        })
+        ->where('purpose', 'registration')
+        ->latest('sent_at')
+        ->first();
 
-        return back()->with('success', 'OTP resent successfully!');
+        if ($lastOtp && $lastOtp->sent_at->diffInSeconds(now()) < 30) {
+            $remainingSeconds = ceil(30 - $lastOtp->sent_at->diffInSeconds(now()));
+            $notify[] = ['error', "Please wait {$remainingSeconds} seconds before requesting another OTP."];
+            return back()->withNotify($notify);
+        }
+
+        try {
+            // Resend OTP
+            $this->otpService->resend(
+                null,
+                $contact,
+                $registrationData['otp_method'],
+                'registration'
+            );
+
+            $notify[] = ['success', 'A new OTP has been sent to your ' . $registrationData['otp_method'] . '. Please check and enter the code.'];
+            return back()->withNotify($notify);
+
+        } catch (\Exception $e) {
+            $notify[] = ['error', 'Failed to send OTP. Please try again later.'];
+            return back()->withNotify($notify);
+        }
     }
 }

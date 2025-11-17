@@ -11,7 +11,7 @@ class OtpService
     /**
      * OTP validity duration in minutes.
      */
-    const OTP_VALIDITY_MINUTES = 1;
+    const OTP_VALIDITY_MINUTES = 2;
 
     /**
      * Generate a random OTP code.
@@ -51,6 +51,7 @@ class OtpService
             'purpose' => $purpose,
             'sent_at' => now(),
             'expires_at' => $expiresAt,
+            'attempts' => 0,
             'status' => 'pending',
             'ip_address' => request()->ip(),
             'user_agent' => request()->userAgent(),

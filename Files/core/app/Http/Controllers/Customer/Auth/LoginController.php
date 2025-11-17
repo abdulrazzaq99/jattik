@@ -109,14 +109,19 @@ class LoginController extends Controller
     public function showVerifyForm()
     {
         if (!session()->has('login_customer_id')) {
-            return redirect()->route('customer.login')->with('error', 'Login session expired. Please start again.');
+            $notify[] = ['error', 'Login session expired. Please start again.'];
+            return redirect()->route('customer.login')->withNotify($notify);
         }
 
         $pageTitle = 'Verify Login OTP';
         $customer = Customer::find(session('login_customer_id'));
         $otpMethod = session('login_otp_method');
 
-        return view('customer.auth.verify_login_otp', compact('pageTitle', 'customer', 'otpMethod'));
+        // Get current OTP log to show attempts
+        $contact = $otpMethod === 'email' ? $customer->email : $customer->mobile;
+        $otpLog = \App\Models\OtpLog::recentFor($contact, 'login')->first();
+
+        return view('customer.auth.verify_login_otp', compact('pageTitle', 'customer', 'otpMethod', 'otpLog'));
     }
 
     /**
@@ -126,27 +131,57 @@ class LoginController extends Controller
     {
         $request->validate([
             'otp_code' => 'required|string|size:6',
+        ], [
+            'otp_code.required' => 'Please enter the OTP code.',
+            'otp_code.size' => 'OTP code must be exactly 6 digits.',
         ]);
 
         if (!session()->has('login_customer_id')) {
-            return back()->with('error', 'Login session expired. Please start again.');
+            $notify[] = ['error', 'Login session expired. Please start again.'];
+            return redirect()->route('customer.login')->withNotify($notify);
         }
 
         $customer = Customer::find(session('login_customer_id'));
 
         if (!$customer) {
-            return back()->with('error', 'Customer not found.');
+            $notify[] = ['error', 'Customer not found.'];
+            return redirect()->route('customer.login')->withNotify($notify);
         }
 
         // Determine contact based on OTP method
         $otpMethod = session('login_otp_method');
         $contact = $otpMethod === 'email' ? $customer->email : $customer->mobile;
 
+        // Check if there's a pending OTP
+        $pendingOtp = \App\Models\OtpLog::recentFor($contact, 'login')->first();
+
+        if (!$pendingOtp) {
+            $notify[] = ['error', 'No active OTP found. Please request a new one.'];
+            return redirect()->route('customer.login.verify')->withNotify($notify);
+        }
+
+        // Check if OTP has expired
+        if ($pendingOtp->isExpired()) {
+            $pendingOtp->markAsExpired();
+            $notify[] = ['error', 'OTP has expired. Please request a new one.'];
+            return redirect()->route('customer.login.verify')->withNotify($notify);
+        }
+
+        // Check if max attempts reached
+        if ($pendingOtp->maxAttemptsReached()) {
+            $notify[] = ['error', 'Maximum verification attempts reached. Please request a new OTP.'];
+            return redirect()->route('customer.login.verify')->withNotify($notify);
+        }
+
         // Verify OTP
         $otpLog = $this->otpService->verify($contact, $request->otp_code, 'login');
 
         if (!$otpLog) {
-            return back()->with('error', 'Invalid or expired OTP. Please try again.');
+            // Refresh the OTP log to get updated attempts count
+            $pendingOtp->refresh();
+            $remainingAttempts = 3 - $pendingOtp->attempts;
+            $notify[] = ['error', "Invalid OTP code. You have {$remainingAttempts} attempt(s) remaining."];
+            return redirect()->route('customer.login.verify')->withNotify($notify);
         }
 
         // Log the customer in
@@ -177,28 +212,52 @@ class LoginController extends Controller
     public function resendOtp(Request $request)
     {
         if (!session()->has('login_customer_id')) {
-            return back()->with('error', 'Login session expired. Please start again.');
+            $notify[] = ['error', 'Login session expired. Please start again.'];
+            return redirect()->route('customer.login')->withNotify($notify);
         }
 
         $customer = Customer::find(session('login_customer_id'));
         $otpMethod = session('login_otp_method');
 
         if (!$customer) {
-            return back()->with('error', 'Customer not found.');
+            $notify[] = ['error', 'Customer not found.'];
+            return redirect()->route('customer.login')->withNotify($notify);
         }
 
         // Determine contact based on OTP method
         $contact = $otpMethod === 'email' ? $customer->email : $customer->mobile;
 
-        // Resend OTP
-        $this->otpService->resend(
-            $customer,
-            $contact,
-            $otpMethod,
-            'login'
-        );
+        // Rate limiting: Check if last OTP was sent less than 30 seconds ago
+        $lastOtp = \App\Models\OtpLog::where(function ($q) use ($contact) {
+            $q->where('email', $contact)
+              ->orWhere('mobile', $contact);
+        })
+        ->where('purpose', 'login')
+        ->latest('sent_at')
+        ->first();
 
-        return back()->with('success', 'OTP resent successfully!');
+        if ($lastOtp && $lastOtp->sent_at->diffInSeconds(now()) < 30) {
+            $remainingSeconds = ceil(30 - $lastOtp->sent_at->diffInSeconds(now()));
+            $notify[] = ['error', "Please wait {$remainingSeconds} seconds before requesting another OTP."];
+            return back()->withNotify($notify);
+        }
+
+        try {
+            // Resend OTP
+            $this->otpService->resend(
+                $customer,
+                $contact,
+                $otpMethod,
+                'login'
+            );
+
+            $notify[] = ['success', 'A new OTP has been sent to your ' . $otpMethod . '. Please check and enter the code.'];
+            return back()->withNotify($notify);
+
+        } catch (\Exception $e) {
+            $notify[] = ['error', 'Failed to send OTP. Please try again later.'];
+            return back()->withNotify($notify);
+        }
     }
 
     /**
