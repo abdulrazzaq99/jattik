@@ -1,26 +1,20 @@
-1. Backend Error Messages (in Controllers)
+feat: Add Arabic translations for homepage dynamic content
 
-  - Added custom sendFailedLoginResponse() method to all login controllers
-  - Shows clear error: "Invalid username/email or password. Please check your
-  credentials and try again."
-  - Added custom validation messages for empty fields
+  Added 42 new Arabic translations to ar.json for all frontend dynamic content including:
+  - Service titles (Express, International, Standard Courier, Warehousing)
+  - Section headings (Why We are The Best, What We Serve, Expert Team)
+  - Banner content and descriptions
+  - Call-to-action buttons
+  - All Lorem ipsum placeholder text replaced with proper Arabic translations
 
-  2. Frontend Inline Error Display (in Views)
+  This ensures complete Arabic language support for all homepage sections when users switch language.
 
-  Added visible error alerts to all login pages that show:
-  - Validation errors (empty fields, etc.)
-  - Login failure errors (wrong password/username)
-  - Session flash messages
+  Files modified:
+  - Files/core/resources/lang/ar.json
 
-  The errors now appear as:
-  - Bootstrap alert boxes at the top of the login form (red error boxes)
-  - Field-level validation with red borders and error text under each field
-  - Toast notifications (the existing iziToast system)
+  Or if you prefer a shorter version:
 
-  3. Files Modified:
+  feat: Complete Arabic translation coverage for homepage content
 
-  - Admin/Auth/LoginController.php (Lines 99-105)
-  - Manager/Auth/LoginController.php (Lines 104-110)
-  - Staff/Auth/LoginController.php (Lines 103-109)
-  - Customer/Auth/LoginController.php (Lines 35-66)
-  - All 4 login blade views with inline error displays
+  Added 42 missing Arabic translations for dynamic frontend content (services, banners, sections, CTAs) to ensure full homepage
+  localization when Arabic language is selected.
